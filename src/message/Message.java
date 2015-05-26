@@ -3,6 +3,8 @@ package message;
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
+import java.net.InetAddress;
+import java.net.SocketAddress;
 
 public class Message {
 
@@ -18,8 +20,8 @@ public class Message {
 		return (new String(message.getData(), 0, message.getLength()));
 	}
 	
-	public void send(byte[] message, DatagramSocket socket) {
-		DatagramPacket msgPckt = new DatagramPacket(message, message.length);
+	public void send(byte[] message, DatagramSocket socket, InetAddress ip, int port) {
+		DatagramPacket msgPckt = new DatagramPacket(message, message.length, ip, port);
 		try {
 			socket.send(msgPckt);
 		} catch (IOException e) {
