@@ -15,7 +15,7 @@ public class Main {
 			SocketException, InterruptedException {
 
 		// 0 sender 1 receiver
-		int choice = Integer.parseInt(args[1]);
+		int choice = Integer.parseInt(args[0]);
 		Node node = new Node(1);
 		System.out.println(node.getIP());
 
