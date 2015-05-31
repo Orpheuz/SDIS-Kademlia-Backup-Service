@@ -19,7 +19,7 @@ public class Main {
 		Node node = new Node(1);
 		System.out.println(node.getIP());
 
-		DatagramSocket socket = new DatagramSocket(8000, node.getIP());
+		DatagramSocket socket = new DatagramSocket(8000);
 
 		if (choice == 1) {
 			String msg = null;
@@ -32,7 +32,8 @@ public class Main {
 		} else {
 			for (int i = 0; i < 5; i++) {
 				Message message = new Message();
-				message.send("Merda".getBytes(), socket, InetAddress.getByName("192.168.1.66"), 8000);
+				message.send("Merda".getBytes(), socket, InetAddress.getByName("188.83.241.69"), 8000);
+				System.out.println("send");
 				Thread.sleep(1000);
 			}
 		}
