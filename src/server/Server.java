@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
+import java.net.SocketException;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Random;
@@ -19,6 +20,7 @@ public class Server {
 	}
 
 	static int HOST_PORT = 6969;
+	static int TRANSLATE_PORT = 6699;
 
 	TreeMap<Integer, PeerId> ipid;
 
@@ -97,7 +99,20 @@ public class Server {
 
 	}
 
-	public void translate(int port) {
+	public void translate(int port) throws IOException {
 
+		DatagramSocket serverSocket = new DatagramSocket(port);
+		while (true) {
+			byte[] data = new byte[1024];
+			DatagramPacket received = new DatagramPacket(data, data.length);
+			serverSocket.receive(received);
+			String message = new String(received.getData()).trim();
+			String ms[] = message.split(" ");
+			if (ms[0].equals("TRANSLATE")) {
+				String response = "TRANSLATED " + ipid.ceilingKey(Integer.parseInt(ms[1]));
+				DatagramPacket sent = new DatagramPacket(response.getBytes(), response.getBytes().length, received.getAddress(), TRANSLATE_PORT);
+				serverSocket.send(sent);
+			}
+		}
 	}
 }

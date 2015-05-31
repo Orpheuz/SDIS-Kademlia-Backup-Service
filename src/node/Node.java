@@ -63,7 +63,7 @@ public class Node {
 		byte[] rdata = new byte[1024];
 		DatagramPacket received = new DatagramPacket(rdata, rdata.length);
 		ds.receive(received);
-		sdata = new String(received.getData());
+		sdata = new String(received.getData()).trim();
 
 		System.out.println("received " + sdata + " from " + ip + " on port " + port);
 
