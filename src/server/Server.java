@@ -20,53 +20,63 @@ public class Server {
 	}
 
 	TreeMap<Integer, PeerId> ipid;
-	
-	public void host(int port) throws IOException {
-		ipid = new TreeMap<Integer, Server.PeerId>();
 
+	public void host(int port) throws IOException {
+
+		@SuppressWarnings("resource")
 		DatagramSocket serverSocket = new DatagramSocket(port);
-		byte[] data = new byte[1024];
+		
+		ipid = new TreeMap<Integer, Server.PeerId>();
+		
 		while (true) {
+			byte[] data = new byte[1024];
 			DatagramPacket received = new DatagramPacket(data, data.length);
 			serverSocket.receive(received);
 			String message = received.getData().toString();
 			String ms[] = message.split(" ");
 			if (ms[0].equals("JOIN")) {
+				PeerId peer = new PeerId();
 				if (ms[1].equals("NEW")) {
-					
 					Random r = new Random();
-					
-					PeerId peer = new PeerId();
 					peer.id = r.nextInt();
 					peer.active = true;
 					peer.ip = received.getAddress();
-					if (ipid.size() > 0) {
-						ipid.put(peer.id, peer);
-						ipid.get(peer.id).right=ipid.higherEntry(peer.id).getValue();
-						ipid.get(peer.id).right=ipid.higherEntry(peer.id).getValue();
-					}
-					else {
-						peer.left = peer;
-						peer.right = peer;
-					}
-					
-				} else {
-
 				}
-				// TODO DIZER VIZINHOS
-				// INFORMAR VIZINHOS
+
+				if (ipid.size() > 0) {
+					ipid.put(peer.id, peer);
+					peer.right = rightActive(peer.id);
+					peer.left = leftActive(peer.id);
+					peer.right.left = ipid.get(peer.id);
+					peer.left.right = ipid.get(peer.id);
+				} else {
+					peer.left = peer;
+					peer.right = peer;
+				}
+				
+				//TODO responder
+				
 			}
 		}
 
 	}
 
-	
-	PeerId leftActive(int id){
-		int n=id;
+	PeerId leftActive(int id) {
+		int n = id;
 		PeerId p;
 		do {
 			p = ipid.higherEntry(n).getValue();
-			n=p.id;
+			n = p.id;
+		} while (!p.active);
+		return p;
+	}
+
+	PeerId rightActive(int id) {
+		int n = id;
+		PeerId p;
+		do {
+			p = ipid.lowerEntry(n).getValue();
+			n = p.id;
 		} while (!p.active);
 		return p;
 	}
