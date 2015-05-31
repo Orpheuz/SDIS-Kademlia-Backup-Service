@@ -12,23 +12,26 @@ import java.util.Enumeration;
 
 public class Node {
 
-	private int ID;
-	private InetAddress IP;
+	private int id;
+	private InetAddress IP, left, right;
 	private DatagramSocket ds;
-	
+
 	public Node(int iD) throws UnknownHostException {
 		super();
-		ID = iD;
+		id = iD;
+		IP = getMyIP();
+	}
+
+	public Node() throws UnknownHostException {
+		super();
 		IP = getMyIP();
 	}
 
 	private InetAddress getMyIP() throws UnknownHostException {
 		try {
-			Enumeration<NetworkInterface> b = NetworkInterface
-					.getNetworkInterfaces();
+			Enumeration<NetworkInterface> b = NetworkInterface.getNetworkInterfaces();
 			while (b.hasMoreElements()) {
-				for (InterfaceAddress f : b.nextElement()
-						.getInterfaceAddresses())
+				for (InterfaceAddress f : b.nextElement().getInterfaceAddresses())
 					if (f.getAddress().isSiteLocalAddress())
 						return f.getAddress();
 			}
@@ -47,18 +50,32 @@ public class Node {
 		IP = iP;
 	}
 
-	
-	public void join (InetAddress ip, int port) throws IOException
-	{
-		String sdata = "JOIN 1.0";
-		DatagramPacket sent = new DatagramPacket(sdata.getBytes(), sdata.getBytes().length);
+	public void joinNew(InetAddress ip, int port) throws IOException {
+		ds = new DatagramSocket(6969);
+		String sdata = "JOIN NEW";
+		byte[] buf = sdata.getBytes();
+		DatagramPacket sent = new DatagramPacket(buf, buf.length);
 		sent.setAddress(ip);
 		sent.setPort(port);
 		ds.send(sent);
-		
-		byte[] rdata=new byte[1024];
+		System.out.println("sent " + new String(sent.getData()) + " to " + ip + " on port " + port);
+
+		byte[] rdata = new byte[1024];
 		DatagramPacket received = new DatagramPacket(rdata, rdata.length);
 		ds.receive(received);
-		//TODO PARSAR
+		sdata = new String(received.getData());
+
+		System.out.println("received " + sdata + " from " + ip + " on port " + port);
+
+		String[] split = sdata.split(" ");
+
+		id = Integer.parseInt(split[1]);
+		left = InetAddress.getByName(split[2]);
+		right = InetAddress.getByName(split[3]);
+	}
+
+	public static void main(String args[]) throws IOException {
+		Node n = new Node();
+		n.joinNew(InetAddress.getLocalHost(), 6969);
 	}
 }
