@@ -12,13 +12,13 @@ import java.util.Enumeration;
 
 public class Node {
 
-	private int ID;
-	private InetAddress IP;
+	private int id;
+	private InetAddress IP,left,right;
 	private DatagramSocket ds;
 	
 	public Node(int iD) throws UnknownHostException {
 		super();
-		ID = iD;
+		id = iD;
 		IP = getMyIP();
 	}
 
@@ -48,9 +48,9 @@ public class Node {
 	}
 
 	
-	public void join (InetAddress ip, int port) throws IOException
+	public void joinNew (InetAddress ip, int port) throws IOException
 	{
-		String sdata = "JOIN 1.0";
+		String sdata = "JOIN NEW";
 		DatagramPacket sent = new DatagramPacket(sdata.getBytes(), sdata.getBytes().length);
 		sent.setAddress(ip);
 		sent.setPort(port);
@@ -59,6 +59,12 @@ public class Node {
 		byte[] rdata=new byte[1024];
 		DatagramPacket received = new DatagramPacket(rdata, rdata.length);
 		ds.receive(received);
-		//TODO PARSAR
+		
+		sdata=received.getData().toString();
+		String[] split = sdata.split(" ");
+
+		id = Integer.parseInt(split[1]);
+		left = InetAddress.getByName(split[2]);
+		right = InetAddress.getByName(split[3]);
 	}
 }

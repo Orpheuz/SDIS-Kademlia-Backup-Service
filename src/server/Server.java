@@ -14,70 +14,78 @@ public class Server {
 	public class PeerId {
 		public int id;
 		public InetAddress ip;
-		public boolean active;
 		public PeerId left;
 		public PeerId right;
 	}
 
+	static int HOST_PORT = 6969;
 	TreeMap<Integer, PeerId> ipid;
 
+	public static void main (String args[]){
+		Server s = new Server();
+		try {
+			s.host(HOST_PORT);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
 	public void host(int port) throws IOException {
 
 		@SuppressWarnings("resource")
 		DatagramSocket serverSocket = new DatagramSocket(port);
-		
+
 		ipid = new TreeMap<Integer, Server.PeerId>();
-		
+
 		while (true) {
 			byte[] data = new byte[1024];
 			DatagramPacket received = new DatagramPacket(data, data.length);
 			serverSocket.receive(received);
 			String message = received.getData().toString();
+			System.out.println("MESSAGE RECEIVED:\n"+message);
 			String ms[] = message.split(" ");
 			if (ms[0].equals("JOIN")) {
 				PeerId peer = new PeerId();
 				if (ms[1].equals("NEW")) {
 					Random r = new Random();
 					peer.id = r.nextInt();
-					peer.active = true;
-					peer.ip = received.getAddress();
+				} else {
+					peer.id = Integer.parseInt(ms[1]);
 				}
+				peer.ip = received.getAddress();
 
 				if (ipid.size() > 0) {
 					ipid.put(peer.id, peer);
-					peer.right = rightActive(peer.id);
-					peer.left = leftActive(peer.id);
-					peer.right.left = ipid.get(peer.id);
-					peer.left.right = ipid.get(peer.id);
+					peer.right = ipid.higherEntry(peer.id).getValue();
+					peer.left =  ipid.lowerEntry(peer.id).getValue();
+					peer.right.left = peer;
+					peer.left.right = peer;
 				} else {
 					peer.left = peer;
 					peer.right = peer;
 				}
+
+				String response = "NEIGHBOUR " + peer.id + " " + peer.left.ip + " " + peer.right.ip;
+
+				DatagramPacket sent = new DatagramPacket(response.getBytes(), response.getBytes().length, peer.ip, HOST_PORT);
+				serverSocket.send(sent);
+
+				response = "NEIGHBOUR " + peer.left.id + " " + peer.left.left.ip + " " + peer.left.right.ip;
+				sent = new DatagramPacket(response.getBytes(), response.getBytes().length, peer.left.ip, HOST_PORT);
+				serverSocket.send(sent);
 				
-				//TODO responder
-				
+				response = "NEIGHBOUR " + peer.right.id + " " + peer.right.left.ip + " " + peer.right.right.ip;
+				sent = new DatagramPacket(response.getBytes(), response.getBytes().length, peer.right.ip, HOST_PORT);
+				serverSocket.send(sent);
+
 			}
 		}
 
 	}
 
-	PeerId leftActive(int id) {
-		int n = id;
-		PeerId p;
-		do {
-			p = ipid.higherEntry(n).getValue();
-			n = p.id;
-		} while (!p.active);
-		return p;
-	}
+	
+	public void translate(int port) {
 
-	PeerId rightActive(int id) {
-		int n = id;
-		PeerId p;
-		do {
-			p = ipid.lowerEntry(n).getValue();
-			n = p.id;
-		} while (!p.active);
-		return p;
 	}
 }
