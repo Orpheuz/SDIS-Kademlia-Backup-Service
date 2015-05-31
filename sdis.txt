@@ -1,10 +1,8 @@
 JOIN <id> //juntar a rede ja la tendo estado
 JOIN NEW  //juntar a rede pela 1ª vez
 
-JOIN NEW <id> <LeftIP> <RightIP> //server (novo peer)
-JOIN <LeftIP> <RightIP> //server (peer volta)
-NEWLEFT <IP> //server
-NEWRIGHT <IP> //server
+NEIGHBOUR NEW <id> <LeftIP> <RightIP> //server (novo peer)
+NEIGHBOUR <IPL> <IPR> //server
 
 ================================================================================================================================================
 
