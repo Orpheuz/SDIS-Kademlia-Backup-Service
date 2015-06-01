@@ -8,9 +8,21 @@ import java.net.InterfaceAddress;
 import java.net.NetworkInterface;
 import java.net.SocketException;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
 import java.util.Enumeration;
 
 public class Node {
+
+	class Subnet {
+		public InetAddress left, right;
+		public String fileID;
+		public int chunkNo;
+		public int repdeg;
+		public boolean last;
+		public InetAddress client;
+	}
+
+	ArrayList<Subnet> subnets;
 
 	private int id;
 	private InetAddress IP, left, right;
@@ -78,4 +90,25 @@ public class Node {
 		Node n = new Node();
 		n.joinNew(InetAddress.getLocalHost(), 6969);
 	}
+
+	public void checkSubNets() {
+		for (int i = 0; i < subnets.size(); i++) {
+			// check for mia's
+			if (ping(subnets.get(i).right)) {
+				//MIA
+				/*
+				 * 1ST SEND MIA TO SERVER
+				 * 
+				 * 2ND GET NODE RIGHT AND MAKE HIM A PEER
+				 */
+			}
+
+			// optimize
+		}
+	}
+
+	private boolean ping(InetAddress ip) {
+		return false;
+	}
+
 }

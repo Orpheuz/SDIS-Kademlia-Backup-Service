@@ -35,7 +35,7 @@ public class Server {
 	}
 
 	public void host(int port) throws IOException {
-
+		// TODO por os peers que saem
 		@SuppressWarnings("resource")
 		DatagramSocket serverSocket = new DatagramSocket(port);
 
@@ -101,6 +101,7 @@ public class Server {
 
 	public void translate(int port) throws IOException {
 
+		@SuppressWarnings("resource")
 		DatagramSocket serverSocket = new DatagramSocket(port);
 		while (true) {
 			byte[] data = new byte[1024];
@@ -115,4 +116,6 @@ public class Server {
 			}
 		}
 	}
+
+	
 }
