@@ -11,6 +11,7 @@ import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Enumeration;
 
+
 public class Node {
 
 	class Subnet {
@@ -24,19 +25,23 @@ public class Node {
 
 	ArrayList<Subnet> subnets;
 
-	private int id;
-	private InetAddress IP, left, right;
+	private int id, port;
+	private InetAddress ip, left, right;
 	private DatagramSocket ds;
+	private NodeTriplet nodeT;
+	
 
-	public Node(int iD) throws UnknownHostException {
+	public Node(int iD, int port) throws UnknownHostException {
 		super();
 		id = iD;
-		IP = getMyIP();
+		ip = getMyIP();
+		this.port = port;
+		this.nodeT = new NodeTriplet(iD, port, ip);
 	}
 
 	public Node() throws UnknownHostException {
 		super();
-		IP = getMyIP();
+		ip = getMyIP();
 	}
 
 	private InetAddress getMyIP() throws UnknownHostException {
@@ -55,11 +60,11 @@ public class Node {
 	}
 
 	public InetAddress getIP() {
-		return IP;
+		return ip;
 	}
 
 	public void setIP(InetAddress iP) {
-		IP = iP;
+		ip = iP;
 	}
 
 	public void joinNew(InetAddress ip, int port) throws IOException {
@@ -109,6 +114,10 @@ public class Node {
 
 	private boolean ping(InetAddress ip) {
 		return false;
+	}
+
+	public NodeTriplet getNodeT() {
+		return nodeT;
 	}
 
 }
