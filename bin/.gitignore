@@ -1,6 +1,5 @@
 /test/
-/.gitignore
-/node/
 /server/
+/routing/
+/node/
 /main/
-/control/
