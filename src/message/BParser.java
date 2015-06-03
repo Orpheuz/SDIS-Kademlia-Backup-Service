@@ -1,13 +1,17 @@
 package message;
 
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import protocols.Backup;
+
 public class BParser extends Thread{
 	static byte[] body;
 	static String[] header;
-	String messageType,version,fileId,chunkNo,replicationDeg;
+	String messageType,version,fileId;
+	int chunkNo, replicationDeg;
 
 	private ArrayList<byte[]> messages;
 
@@ -33,9 +37,13 @@ public class BParser extends Thread{
 				messageType = header[0];
 				version = header[1];
 				fileId = header[2];
-				chunkNo = header[3];
-				replicationDeg = header[4];
-				//TODO tratar cenas
+				chunkNo = Integer.parseInt(header[3]);
+				replicationDeg = Integer.parseInt(header[4]);
+				try {
+					Backup.storeChunk(fileId, chunkNo, replicationDeg, body);
+				} catch (IOException e) {
+					System.out.println("Failed to store file");
+				}
 			}
 		}
 		else{
@@ -46,7 +54,7 @@ public class BParser extends Thread{
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			System.out.println("Recebi mensagem invalida: " + s);
+			System.out.println("Recebi mensagem de backup invalida: " + s);
 		}
 		messages.remove(0);
 	}

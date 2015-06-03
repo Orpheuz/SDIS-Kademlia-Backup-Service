@@ -23,7 +23,7 @@ public class Read extends Thread{
 		try {
 			srvSocket = new ServerSocket(port);
 		} catch (IOException e) {
-			System.out.println("Failed to open connection on port + " + port);
+			System.out.println("Failed to open connection on port " + port);
 			return;
 		}
 

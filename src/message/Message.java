@@ -10,11 +10,14 @@ public class Message {
 		Read bRead= new Read(8000);
 		bRead.start();
 		
-		Read pingRead= new Read(8001);
-		pingRead.start();
+		Read rRead= new Read(8001);
+		rRead.start();
 
-		BParser parser = new BParser(bRead.messages);
-		parser.start();
+		BParser bparser = new BParser(bRead.messages);
+		bparser.start();
+		
+		RParser rparser = new RParser(rRead.messages);
+		rparser.start();
 
 	}
 }

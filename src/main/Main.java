@@ -35,7 +35,7 @@ public class Main {
 		
 
 
-		Write.run("Teste","127.0.0.1",8000);
+		Write.run("Teste","192.168.2.118",8000);
 		
 	}
 }
