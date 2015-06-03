@@ -1,20 +1,15 @@
 package main;
 
-import java.net.DatagramSocket;
-import java.net.InetAddress;
-import java.net.SocketAddress;
-import java.net.SocketException;
-import java.net.UnknownHostException;
+import java.io.IOException;
 
-import message.Message;
-import node.Node;
+import message.Write;
 
 public class Main {
 
-	public static void main(String[] args) throws UnknownHostException,
-			SocketException, InterruptedException {
+	public static void main(String[] args) throws InterruptedException, IOException {
 
 		// 0 sender 1 receiver
+		/*
 		int choice = Integer.parseInt(args[0]);
 		Node node = new Node(1);
 		System.out.println(node.getIP());
@@ -36,6 +31,11 @@ public class Main {
 				System.out.println("send");
 				Thread.sleep(1000);
 			}
-		}
+		}*/
+		
+
+
+		Write.run("Teste","127.0.0.1",8000);
+		
 	}
 }

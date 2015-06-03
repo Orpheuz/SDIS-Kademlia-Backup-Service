@@ -1,6 +1,9 @@
 /test/
 /.gitignore
-/node/
-/server/
+/dht/
 /main/
-/control/
+/message/
+/node/
+/routing/
+/server/
+/utils/
