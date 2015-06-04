@@ -9,29 +9,21 @@ import java.net.NetworkInterface;
 import java.net.SocketException;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Enumeration;
 
 
-public class Node {
+public class Node implements Comparable<Node> {
 
-	class Subnet {
-		public InetAddress left, right;
-		public String fileID;
-		public int chunkNo;
-		public int repdeg;
-		public boolean last;
-		public InetAddress client;
-	}
-
-	ArrayList<Subnet> subnets;
-
-	private int id, port;
-	private InetAddress ip, left, right;
-	private DatagramSocket ds;
+	private byte id[] = new byte[160];
+	private int port;
+	private long lastSeen;
+	private int staleCount;
+	private InetAddress ip;
 	private NodeTriplet nodeT;
 	
 
-	public Node(int iD, int port) throws UnknownHostException {
+	public Node(byte[] iD, int port) throws UnknownHostException {
 		super();
 		id = iD;
 		ip = getMyIP();
@@ -68,48 +60,12 @@ public class Node {
 	}
 
 	public void joinNew(InetAddress ip, int port) throws IOException {
-		ds = new DatagramSocket(6969);
-		String sdata = "JOIN NEW";
-		byte[] buf = sdata.getBytes();
-		DatagramPacket sent = new DatagramPacket(buf, buf.length);
-		sent.setAddress(ip);
-		sent.setPort(port);
-		ds.send(sent);
-		System.out.println("sent " + new String(sent.getData()) + " to " + ip + " on port " + port);
-
-		byte[] rdata = new byte[1024];
-		DatagramPacket received = new DatagramPacket(rdata, rdata.length);
-		ds.receive(received);
-		sdata = new String(received.getData()).trim();
-
-		System.out.println("received " + sdata + " from " + ip + " on port " + port);
-
-		String[] split = sdata.split(" ");
-
-		id = Integer.parseInt(split[1]);
-		left = InetAddress.getByName(split[2]);
-		right = InetAddress.getByName(split[3]);
+//		
 	}
 
 	public static void main(String args[]) throws IOException {
 		Node n = new Node();
 		n.joinNew(InetAddress.getLocalHost(), 6969);
-	}
-
-	public void checkSubNets() {
-		for (int i = 0; i < subnets.size(); i++) {
-			// check for mia's
-			if (ping(subnets.get(i).right)) {
-				//MIA
-				/*
-				 * 1ST SEND MIA TO SERVER
-				 * 
-				 * 2ND GET NODE RIGHT AND MAKE HIM A PEER
-				 */
-			}
-
-			// optimize
-		}
 	}
 
 	private boolean ping(InetAddress ip) {
@@ -118,6 +74,59 @@ public class Node {
 
 	public NodeTriplet getNodeT() {
 		return nodeT;
+	}
+
+	public void resetStale() {
+		staleCount = 0;
+	}
+
+	public int getStale() {
+		return staleCount;
+	}
+
+	public int distance(byte id[]) {
+		int i;
+		for (i = 0; i < id.length; i++) {
+			if ((id[i] ^ this.id[i]) == 1)
+				break;
+		}
+		return 160 - i;
+	}
+
+	@Override
+	public int compareTo(Node o) {
+		if (idHash() == o.hashCode())
+			return 0;
+		return lastSeen > o.lastSeen ? 1 : -1;
+	}
+
+	int idHash() {
+		return Arrays.hashCode(id);
+	}
+
+	public byte[] getId() {
+		return id;
+	}
+
+	public void setSeen() {
+		lastSeen = System.currentTimeMillis() / 1000L;
+		;
+	}
+
+	public long getSeen() {
+		return lastSeen;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (obj instanceof Node) {
+			Node n = (Node) obj;
+			if (n == this) {
+				return true;
+			}
+			return idHash() == n.hashCode();
+		}
+		return false;
 	}
 
 }
