@@ -5,9 +5,9 @@ import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import protocols.Backup;
+import subprotocols.Backup;
 
-public class BParser extends Thread{
+public class BParser extends Thread {
 	static byte[] body;
 	static String[] header;
 	String messageType,version,fileId;
@@ -18,7 +18,6 @@ public class BParser extends Thread{
 	public BParser(ArrayList<byte[]> messages){
 		this.messages = messages;
 	}
-
 
 	public void run(){
 		while(true){
