@@ -43,6 +43,7 @@ public class Bucket {
 				nodes.remove(stalest);
 				nodes.add(n);
 			} else if (spiltable) {
+				nodes.add(n);
 				int firstDif;
 				for (firstDif = 0; firstDif < 160; firstDif++) {
 					byte b = 0;
@@ -52,19 +53,21 @@ public class Bucket {
 					if (b != 0)
 						break;
 				}
-				Bucket b = new Bucket(false);
-				byte[] base = Arrays.copyOf(nodes.first().getId(), firstDif);
+				Bucket newb = new Bucket(false);
+				Bucket oldb = new Bucket(false);
+				byte[] base = Arrays.copyOf(nodes.first().getId(), firstDif + 1);
 				for (Node node : nodes) {
-					for (int i = 0; i < base.length; i++) {
-						if (!Arrays.equals(base, Arrays.copyOf(node.getId(), firstDif))) {
-							b.insert(node);
-							nodes.remove(node);
-						}
+					if (!Arrays.equals(base, Arrays.copyOf(node.getId(), firstDif+1))) {
+						newb.insert(node);
+						nodes.remove(node);
 					}
+					else
+						oldb.insert(node);
 				}
-				ArrayList<Object> ar= new ArrayList<Object>();
+				this.nodes=oldb.nodes;
+				ArrayList<Object> ar = new ArrayList<Object>();
 				ar.add(firstDif);
-				ar.add(b);
+				ar.add(newb);
 				return ar;
 			}
 		}
@@ -86,5 +89,13 @@ public class Bucket {
 		for (Node n : nodes)
 			l.add(n);
 		return l;
+	}
+
+	public String toString() {
+		String str = "";
+		for (Node node : nodes) {
+			str += node.toString() + ",";
+		}
+		return str;
 	}
 }

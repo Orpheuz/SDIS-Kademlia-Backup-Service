@@ -12,7 +12,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Enumeration;
 
-
 public class Node implements Comparable<Node> {
 
 	private byte id[] = new byte[160];
@@ -21,7 +20,6 @@ public class Node implements Comparable<Node> {
 	private int staleCount;
 	private InetAddress ip;
 	private NodeTriplet nodeT;
-	
 
 	public Node(byte[] iD, int port) throws UnknownHostException {
 		super();
@@ -60,7 +58,7 @@ public class Node implements Comparable<Node> {
 	}
 
 	public void joinNew(InetAddress ip, int port) throws IOException {
-//		
+		//
 	}
 
 	public static void main(String args[]) throws IOException {
@@ -126,6 +124,14 @@ public class Node implements Comparable<Node> {
 			return idHash() == n.hashCode();
 		}
 		return false;
+	}
+
+	public String toString() {
+		int n=0;
+		for (int i = 0; i < id.length; i++) {
+			n+=id[i]*Math.pow(2, 159-i);
+		}
+		return ""+n;
 	}
 
 }

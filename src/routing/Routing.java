@@ -25,7 +25,6 @@ public class Routing {
 	}
 
 	public void insert(Node p) {
-		// TODO Inserir novo bucket
 		int n = getbucket(p);
 		ArrayList<Object> ar = null;
 		Bucket b = null;
