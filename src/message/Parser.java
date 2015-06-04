@@ -1,7 +1,6 @@
 package message;
 
 import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
 
 public class Parser {
 	static String body;
@@ -21,6 +20,8 @@ public class Parser {
 				return new PutChunkMessage(header[1], Integer.parseInt(header[2]), Integer.parseInt(header[3]));
 			case Message.RESTORE_MSG:
 				return new RestoreMessage(Integer.parseInt(header[2]), header[1], body);
+			case Message.RESTORE_RSP:
+				return new RestoreResponse(body);
 			case Message.DELETE_MSG:
 				return new DeleteMessage(header[1]);
 				
