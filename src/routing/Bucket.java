@@ -10,7 +10,7 @@ import node.Node;
 
 public class Bucket {
 	TreeSet<Node> nodes;
-	static int K = 20;
+	static int K = 2;
 	boolean spiltable;
 	static int STALL = 3;// TODO mudar stall para remover se nao responder a
 							// ping

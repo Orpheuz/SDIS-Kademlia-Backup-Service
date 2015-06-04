@@ -18,6 +18,7 @@ public class Routing {
 		this.local = local;
 		buckets = new TreeMap<Integer, Bucket>();
 		buckets.put(160, new Bucket(true));
+		buckets.get(160).insert(local);
 	}
 
 	public int getbucket(Node p) {
@@ -73,5 +74,17 @@ public class Routing {
 				nodes.add(n);
 
 		return nodes;
+	}
+	
+	public String toString(){
+		String str="";
+		Collection<Bucket> c = buckets.values();
+		for (Bucket b : c)
+		{
+			for (Node n : b.getNodes())
+				str+=n.toString()+",";
+			str+=";";
+		}
+		return str;
 	}
 }
