@@ -10,11 +10,6 @@ public class DeleteMessage extends Message{
 	public DeleteMessage(String fileID) {
 		super();
 		this.fileID = fileID;
+		message = Message.DELETE_MSG + Message.SEPARATOR + fileID + Message.SEPARATOR + Message.CRLF+ Message.CRLF;
 	}
-	
-	public void buildDeleteMessage(){
-		message = (Message.DELETE_MSG + Message.SEPARATOR + fileID + Message.SEPARATOR + Message.CRLF+ Message.CRLF).getBytes();
-	}
-	
-	
 }
