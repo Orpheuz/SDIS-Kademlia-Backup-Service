@@ -1,6 +1,8 @@
 package routing;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 import java.util.TreeSet;
 
@@ -9,18 +11,21 @@ import node.Node;
 public class Bucket {
 	TreeSet<Node> nodes;
 	static int K = 20;
-	static int STALL = 3;//TODO mudar stall para remover se nao responder a ping
+	boolean spiltable;
+	static int STALL = 3;// TODO mudar stall para remover se nao responder a
+							// ping
 
-	public Bucket(int depth) {
+	public Bucket(boolean split) {
 		nodes = new TreeSet<Node>();
+		spiltable = split;
 	}
 
-	public Bucket insert(Node n) {
+	public ArrayList<Object> insert(Node n) {
 		if (nodes.contains(n)) {
-			Node tmp=removeFromNodes(n);
+			Node tmp = removeFromNodes(n);
 			tmp.setSeen();
-            tmp.resetStale();
-            nodes.add(tmp);
+			tmp.resetStale();
+			nodes.add(tmp);
 		} else if (nodes.size() < K)
 			nodes.add(n);
 		else {
@@ -37,33 +42,48 @@ public class Bucket {
 			if (stalest != null) {
 				nodes.remove(stalest);
 				nodes.add(n);
-			}
-			else{
-				//TODO split
-				//encontrar 1ª dif
-				//expulsar igual a local
-				//criar novo bucket com novos
-				//retorna lo
+			} else if (spiltable) {
+				int firstDif;
+				for (firstDif = 0; firstDif < 160; firstDif++) {
+					byte b = 0;
+					for (Node nds : nodes) {
+						b ^= nds.getId()[firstDif];
+					}
+					if (b != 0)
+						break;
+				}
+				Bucket b = new Bucket(false);
+				byte[] base = Arrays.copyOf(nodes.first().getId(), firstDif);
+				for (Node node : nodes) {
+					for (int i = 0; i < base.length; i++) {
+						if (!Arrays.equals(base, Arrays.copyOf(node.getId(), firstDif))) {
+							b.insert(node);
+							nodes.remove(node);
+						}
+					}
+				}
+				ArrayList<Object> ar= new ArrayList<Object>();
+				ar.add(firstDif);
+				ar.add(b);
+				return ar;
 			}
 		}
 		return null;
 	}
 
 	private Node removeFromNodes(Node n) {
-		 for (Node c : nodes)
-	        {
-	            if (c.equals(n))
-	            {
-	                nodes.remove(c);
-	                return c;
-	            }
-	        }
+		for (Node c : nodes) {
+			if (c.equals(n)) {
+				nodes.remove(c);
+				return c;
+			}
+		}
 		return null;
 	}
 
 	public List<Node> getNodes() {
-		ArrayList<Node> l=new ArrayList<Node>();
-		for(Node n:nodes)
+		ArrayList<Node> l = new ArrayList<Node>();
+		for (Node n : nodes)
 			l.add(n);
 		return l;
 	}
