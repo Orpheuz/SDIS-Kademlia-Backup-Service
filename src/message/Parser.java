@@ -1,6 +1,11 @@
 package message;
 
 import java.io.UnsupportedEncodingException;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+import java.util.ArrayList;
+
+import node.NodeTriplet;
 
 public class Parser {
 	static String body;
@@ -24,7 +29,14 @@ public class Parser {
 				return new RestoreResponse(body);
 			case Message.DELETE_MSG:
 				return new DeleteMessage(header[1]);
-				
+			case Message.PING_MSG:
+				return new PingMessage(Integer.parseInt(header[1]));
+			case Message.PING_RSP:
+				return new PingResponse();
+			case Message.FINDNODE_MSG:
+				return new FindNodeMessage(header[1].getBytes());
+			case Message.FINDNODE_RSP:
+				return new FindNodeResponse(body);
 			default:
 				break;
 			}

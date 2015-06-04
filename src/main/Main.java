@@ -37,16 +37,12 @@ public class Main {
 		}*/
 		
 		PutChunkMessage test = new PutChunkMessage("1", 2, 3);
-		test.buildPutChunkMessage();
-		byte[] tst = test.getMessage();
-		System.out.println(tst);
+		byte[] tst = test.getMessage().getBytes();
 		
 		Parser p = new Parser(tst);
 		
 		PutChunkMessage msg = (PutChunkMessage) p.parseMessage();
-		//System.out.println(msg.getMessage().toString());
-		System.out.println(msg.getFileID());
-		System.out.println(msg.getChunkNo());
+		System.out.println(msg.getMessage());
 		
 		
 		
