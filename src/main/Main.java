@@ -44,7 +44,7 @@ public class Main {
 		Parser p = new Parser(tst);
 		
 		PutChunkMessage msg = (PutChunkMessage) p.parseMessage();
-		//System.out.println(msg.getMessage().toString());
+		System.out.println(msg.getMessage());
 		System.out.println(msg.getFileID());
 		System.out.println(msg.getChunkNo());
 		
