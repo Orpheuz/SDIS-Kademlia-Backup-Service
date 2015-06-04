@@ -1,23 +1,21 @@
 package routing;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.TreeSet;
 
 import node.Node;
 
 public class Bucket {
 	TreeSet<Node> nodes;
-	TreeSet<Node> cache;
-	int depth;
 	static int K = 20;
-	static int STALL = 3;
+	static int STALL = 3;//TODO mudar stall para remover se nao responder a ping
 
 	public Bucket(int depth) {
-		this.depth = depth;
 		nodes = new TreeSet<Node>();
-		cache = new TreeSet<Node>();
 	}
 
-	public void insert(Node n) {
+	public Bucket insert(Node n) {
 		if (nodes.contains(n)) {
 			Node tmp=removeFromNodes(n);
 			tmp.setSeen();
@@ -39,9 +37,16 @@ public class Bucket {
 			if (stalest != null) {
 				nodes.remove(stalest);
 				nodes.add(n);
-			} else
-				cache.add(n);
+			}
+			else{
+				//TODO split
+				//encontrar 1ª dif
+				//expulsar igual a local
+				//criar novo bucket com novos
+				//retorna lo
+			}
 		}
+		return null;
 	}
 
 	private Node removeFromNodes(Node n) {
@@ -54,5 +59,12 @@ public class Bucket {
 	            }
 	        }
 		return null;
+	}
+
+	public List<Node> getNodes() {
+		ArrayList<Node> l=new ArrayList<Node>();
+		for(Node n:nodes)
+			l.add(n);
+		return l;
 	}
 }

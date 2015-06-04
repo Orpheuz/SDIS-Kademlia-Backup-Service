@@ -15,7 +15,6 @@ public class Server {
 	static int HOST_PORT = 6969;
 	static int TRANSLATE_PORT = 6699;
 
-	TreeSet<Integer, InetAddress> ipid;
 
 	public static void main(String args[]) {
 		Server s = new Server();
@@ -31,25 +30,25 @@ public class Server {
 		// TODO por os peers que saem
 		@SuppressWarnings("resource")
 		DatagramSocket serverSocket = new DatagramSocket(port);
-		ipid = new TreeSet<Integer, InetAddress>();
-
-		while (true) {
-			message.Message ms;
-			
-			if (ms[0].equals("JOIN")) {
-				int id;
-				if (ms[1].equals("NEW")) {
-					Random r = new Random();
-					id = r.nextInt();
-				} else {
-					id = Integer.parseInt(ms[1]);
-				}
-
-				ipid.put(id, received.getAddress());
-
-				
-			}
-		}
+//		ipid = new TreeSet<Integer, InetAddress>();
+//
+//		while (true) {
+//			message.Message ms;
+//			
+//			if (ms[0].equals("JOIN")) {
+//				int id;
+//				if (ms[1].equals("NEW")) {
+//					Random r = new Random();
+//					id = r.nextInt();
+//				} else {
+//					id = Integer.parseInt(ms[1]);
+//				}
+//
+//				ipid.put(id, received.getAddress());
+//
+//				
+//			}
+//		}
 
 	}
 
@@ -64,9 +63,9 @@ public class Server {
 			String message = new String(received.getData()).trim();
 			String ms[] = message.split(" ");
 			if (ms[0].equals("TRANSLATE")) {
-				String response = "TRANSLATED " + ipid.ceilingKey(Integer.parseInt(ms[1]));
-				DatagramPacket sent = new DatagramPacket(response.getBytes(), response.getBytes().length, received.getAddress(), TRANSLATE_PORT);
-				serverSocket.send(sent);
+//				String response = "TRANSLATED " + ipid.ceilingKey(Integer.parseInt(ms[1]));
+//				DatagramPacket sent = new DatagramPacket(response.getBytes(), response.getBytes().length, received.getAddress(), TRANSLATE_PORT);
+//				serverSocket.send(sent);
 			}
 		}
 	}
