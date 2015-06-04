@@ -1,13 +1,23 @@
 package node;
 
-import java.net.InetAddress;
 
 public class NodeTriplet {
 	int id, port;
-	InetAddress ip;
-	NodeTriplet(int id, int port, InetAddress ip) {
+	String ip;
+	NodeTriplet(int id, int port, String ip) {
 		this.id = id;
 		this.ip = ip;
 		this.port = port;
 	}
+	public int getId() {
+		return id;
+	}
+	public int getPort() {
+		return port;
+	}
+	public String getIp() {
+		return ip;
+	}
+	
+	
 }
