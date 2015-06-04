@@ -9,23 +9,10 @@ public class Parser {
 	String messageType,version,fileId;
 	int chunkNo, replicationDeg;
 
-	private ArrayList<byte[]> messages;
-
-	public Parser(ArrayList<byte[]> messages){
-		this.messages = messages;
+	public Parser(byte[] message){
+		separateHeader(message);
 	}
 
-
-	public void run(){
-		while(true){
-			if(messages.size()>0){
-				if(messages.get(0) != null){
-					separateHeader(messages.get(0));
-					parseMessage();
-				}
-			}
-		}
-	}
 
 	public Message parseMessage() {
 		if(header != null){
@@ -41,7 +28,6 @@ public class Parser {
 				break;
 			}
 		}
-		messages.remove(0);
 		return null;
 	}
 	

@@ -2,6 +2,9 @@ package main;
 
 import java.io.IOException;
 
+import message.Message;
+import message.Parser;
+import message.PutChunkMessage;
 import message.Write;
 
 public class Main {
@@ -33,9 +36,19 @@ public class Main {
 			}
 		}*/
 		
-
-
-		Write.send("Teste","127.0.0.1",8000);
+		PutChunkMessage test = new PutChunkMessage("1", 2, 3);
+		test.buildPutChunkMessage();
+		byte[] tst = test.getMessage();
+		System.out.println(tst);
+		
+		Parser p = new Parser(tst);
+		
+		PutChunkMessage msg = (PutChunkMessage) p.parseMessage();
+		//System.out.println(msg.getMessage().toString());
+		System.out.println(msg.getFileID());
+		System.out.println(msg.getChunkNo());
+		
+		
 		
 	}
 }

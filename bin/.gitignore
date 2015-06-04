@@ -1,13 +1,4 @@
 /test/
-/.gitignore
-/dht/
-/main/
 /message/
-/node/
-/protocols/
-/routing/
-/server/
 /utils/
-/listeners/
-/handlers/
-/subprotocols/
+/main/

@@ -1,6 +1,6 @@
 package message;
 
-public class PutChunkMessage extends Message{
+public class PutChunkMessage extends Message {
 	private int chunkNo, repDeg;
 	private String body, fileID;
 	
