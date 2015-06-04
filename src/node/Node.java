@@ -110,7 +110,6 @@ public class Node implements Comparable<Node> {
 
 	public void setSeen() {
 		lastSeen = System.currentTimeMillis() / 1000L;
-		;
 	}
 
 	public long getSeen() {
