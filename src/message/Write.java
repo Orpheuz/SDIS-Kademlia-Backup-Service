@@ -26,10 +26,10 @@ public class Write {
 			socket.connect(new InetSocketAddress(adress,port), timeout);
 			PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
 			out.print(toSend);
-			BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-			response = in.readLine();
+			//BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+			//response = in.readLine();
 			out.close();
-			in.close();
+			//in.close();
 
 		}catch(SocketTimeoutException e){
 			System.out.println("Failed to connect to " + ip + " on port "+ port);
