@@ -17,7 +17,8 @@ public class Routing {
 	public Routing(Node local) {
 		this.local = local;
 		buckets = new TreeMap<Integer, Bucket>();
-		buckets.put(160, new Bucket(160));
+		buckets.put(160, new Bucket(true));
+		buckets.get(160).insert(local);
 	}
 
 	public int getbucket(Node p) {
@@ -26,16 +27,26 @@ public class Routing {
 
 	public void insert(Node p) {
 		int n = getbucket(p);
-		if (buckets.containsKey(n))
+		ArrayList<Object> ar = null;
+		Bucket b = null;
+		if (buckets.containsKey(n)) {
+			b = buckets.get(n);
+			ar = buckets.get(n).insert(p);
+		} else if (buckets.firstKey() >= n) {
+			b = buckets.firstEntry().getValue();
+			ar = buckets.firstEntry().getValue().insert(p);
+		} else {
+			buckets.put(n, new Bucket(false));
 			buckets.get(n).insert(p);
-		else if (buckets.firstKey() >= n)
-			buckets.firstEntry().getValue().insert(p);
-		else{
-		buckets.put(n, new Bucket(n));
-		buckets.get(n).insert(p);
 		}
-		// else
-		// buckets.put(n, value);
+		if (ar != null) {
+			buckets.put((Integer) ar.get(0), (Bucket) ar.get(1));
+			if(!b.nodes.contains(local))
+			{
+				b.spiltable=false;
+				buckets.get((Integer) ar.get(0)).spiltable=true;
+			}
+		}
 	}
 
 	public synchronized final List<Node> findClosest(byte[] target, int numNodesRequired) {
@@ -63,5 +74,17 @@ public class Routing {
 				nodes.add(n);
 
 		return nodes;
+	}
+	
+	public String toString(){
+		String str="";
+		Collection<Bucket> c = buckets.values();
+		for (Bucket b : c)
+		{
+			for (Node n : b.getNodes())
+				str+=n.toString()+",";
+			str+=";";
+		}
+		return str;
 	}
 }
