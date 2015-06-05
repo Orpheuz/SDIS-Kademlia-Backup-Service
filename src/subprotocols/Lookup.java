@@ -20,17 +20,15 @@ public class Lookup {
 	static final int K = 3;
 
 	byte[] target;
-	Routing table;
 	TreeSet<Node> nodes;
 
-	public Lookup(byte[] target, Routing t) {
+	public Lookup(byte[] target) {
 		this.target = target;
-		table = t;
 		nodes = new TreeSet<Node>(new IdComparer(target));
 	}
 
 	Node run() {
-		List<Node> ln = table.findClosest(target, K);
+		List<Node> ln = Routing.findClosest(target, K);
 		run(ln);
 		return nodes.first();
 	}
