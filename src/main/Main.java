@@ -7,9 +7,11 @@ import java.util.Random;
 import javax.swing.plaf.TextUI;
 
 import routing.Routing;
+import subprotocols.Ping;
 import tui.TextInterface;
 import node.Node;
 import listeners.ReceivingThread;
+import listeners.WriteThread;
 
 public class Main {
 	public static int myPort;
@@ -38,6 +40,10 @@ public class Main {
 			Routing.initialize(n);
 			Node b = new Node(bid, InetAddress.getByName(args[2]), Integer.parseInt(args[3]));
 			Routing.insert(b);
+			
+			Ping p= new Ping(bid, b.getIP(), b.getPort());
+			Thread t = new Thread(p);
+			t.start();
 		}
 
 		 ReceivingThread thread = new ReceivingThread(Integer.parseInt(args[1]));

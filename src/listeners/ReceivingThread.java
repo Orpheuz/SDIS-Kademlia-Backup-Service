@@ -49,6 +49,7 @@ public class ReceivingThread implements Runnable {
 			}
 
 			try {
+				System.out.println("message recieved");
 				stream = readSocket.getInputStream();
 				byte[] message = new byte[65000];
 				int count = stream.read(message);
