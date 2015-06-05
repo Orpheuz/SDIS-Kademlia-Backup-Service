@@ -12,7 +12,7 @@ import node.Node;
 import listeners.ReceivingThread;
 
 public class Main {
-
+	public static int myPort;
 	public static void main(String[] args) throws InterruptedException, IOException, ClassNotFoundException {
 
 		byte[] id = new byte[160];
@@ -33,6 +33,7 @@ public class Main {
 				else
 					id[i] = 0;
 			int port = Integer.parseInt(args[0]);
+			myPort = port;
 			Node n = new Node(id, port);
 			Routing.initialize(n);
 			Node b = new Node(bid, InetAddress.getByName(args[2]), Integer.parseInt(args[3]));
