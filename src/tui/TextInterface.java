@@ -7,6 +7,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import routing.Routing;
+import subprotocols.Backup;
 import utils.Database;
 import dht.DHT;
 
@@ -61,7 +62,7 @@ public class TextInterface {
 				b.file = filePathString;
 				b.repDeg = rp;
 				files.add(b);
-				// TODO backup
+				threadManager.submit(new Backup(new File(filePathString), rp));
 				break;
 			}
 			case 2: {
