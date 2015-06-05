@@ -17,7 +17,7 @@ public class Parser {
 			case Message.PUTCHUNK_MSG:
 				return new PutChunkMessage(header[1], Integer.parseInt(header[2]), Integer.parseInt(header[3]),body);
 			case Message.RESTORE_MSG:
-				return new RestoreMessage(Integer.parseInt(header[2]), header[1], body, Integer.parseInt(header[3]));
+				return new RestoreMessage(Integer.parseInt(header[2]), header[1], Integer.parseInt(header[3]));
 			case Message.RESTORE_RSP:
 				return new RestoreResponse(body,header[1],Integer.parseInt(header[2]));
 			case Message.DELETE_MSG:
