@@ -1,44 +1,151 @@
-JOIN <id> //juntar a rede ja la tendo estado
-JOIN NEW  //juntar a rede pela 1ª vez
+package data;
 
-NEIGHBOUR NEW <id> <LeftIP> <RightIP> //server (novo peer)
-NEIGHBOUR <IPL> <IPR> //server
+public class Message {
 
-================================================================================================================================================
+	public static final String VERSION = "1.0";
+	public static final String CHUNK_MSG = "CHUNK";
+	public static final String GETCHUNK_MSG = "GETCHUNK";
+	public static final String REMOVED_MSG = "REMOVED";
+	public static final String DELETE_MSG = "DELETE";
+	public static final String PUTCHUNK_MSG = "PUTCHUNK";
+	public static final String STORED_MSG = "STORED";
+	public static final String CRLF = "\r\n";
+	public static final String SEPARATOR = " ";
 
-PUTCHUNK 1.0 <FileId> <ChunkNo> <Repdeg> <CRLF><CRLF><Body>
-PUTCHUNK 2.0 <FileId> <ChunkNo> <Repdeg> <PeersIp> <CRLF><CRLF><Body>
-PUTCHUNK 3.0 <FileId> <ChunkNo> <Repdeg> <Peers> <pos> <CRLF><CRLF><Body>
+	public static byte[] buildPutChunkMessage(String fileID, String chunkNo,
+			String repDeg, String body) {
+		return (PUTCHUNK_MSG + SEPARATOR + VERSION + SEPARATOR + fileID
+				+ SEPARATOR + chunkNo + SEPARATOR + repDeg + SEPARATOR + CRLF
+				+ CRLF + body).getBytes();
+	}
 
-COMPLETE <FileId> <ChunkNo> <Peers>
+	public static byte[] buildGetChunkMessage(String fileID, String chunkNo) {
+		return (GETCHUNK_MSG + SEPARATOR + VERSION + SEPARATOR + fileID
+				+ SEPARATOR + chunkNo + SEPARATOR + CRLF + CRLF).getBytes();
+	}
 
-================================================================================================================================================
+	public static byte[] buildChunkMessage(String fileID, String chunkNo,
+			byte[] body) {
+		byte[] message = (CHUNK_MSG + SEPARATOR + VERSION + SEPARATOR + fileID
+				+ SEPARATOR + chunkNo + SEPARATOR + CRLF + CRLF).getBytes();
+		byte[] result = new byte[message.length + body.length];
+		System.arraycopy(message, 0, result, 0, message.length);
+		System.arraycopy(body, 0, result, message.length, body.length);
+		
+		return result;
+	}
 
-GETCHUNK <FileId> <ChunkNo>
-NOTHERE <nextIp>
-CHUNK <FileId> <ChunkNo> <CRLF><CRLF><Body>
+	public static byte[] buildStoredMessage(String fileID, String chunkNo) {
+		return (STORED_MSG + SEPARATOR + VERSION + SEPARATOR + fileID
+				+ SEPARATOR + chunkNo + SEPARATOR + CRLF + CRLF).getBytes();
+	}
 
-================================================================================================================================================
+	public static byte[] buildRemovedMessage(String fileID, String chunkNo) {
+		return (REMOVED_MSG + SEPARATOR + VERSION + SEPARATOR + fileID
+				+ SEPARATOR + chunkNo + SEPARATOR + CRLF + CRLF).getBytes();
+	}
 
-DELETE 1.0 <FileId> <ChunkNo>
-NOTHERE <nextIp>
-DELETE 2.0 <FileId> <ChunkNo>
+	public static byte[] buildDeletedMessage(String fileId) {
+		return (DELETE_MSG + SEPARATOR + VERSION + SEPARATOR + fileId
+				+ SEPARATOR + CRLF + CRLF).getBytes();
+	}
 
-================================================================================================================================================
+	String messageType, version, fileId, chunkNo, replicationDeg, body;
 
-TRANSLATE <id>
-TRANSLATE <ip> //server
+	public String getMessageType() {
+		return messageType;
+	}
 
-================================================================================================================================================
+	public String getVersion() {
+		return version;
+	}
 
-OPTIMIZE <peersId> <min> <max> //subnet pede melhor peer
-OPTIMIZE <Ip> <Id> //server
+	public String getFileId() {
+		return fileId;
+	}
 
-================================================================================================================================================
+	public String getChunkNo() {
+		return chunkNo;
+	}
 
-PING
-PONG
+	public String getReplicationDeg() {
+		return replicationDeg;
+	}
 
-================================================================================================================================================
+	public String getBody() {
+		return body;
+	}
 
-MIA <Ip>
+	public Message(String message) {
+		message = message.trim();
+		if (!message.equals("")) {
+			String[] dataArr = message.split(Message.CRLF + Message.CRLF);
+
+			for (int i = 0; i < dataArr.length; i++) {
+				dataArr[i] = dataArr[i].trim();
+			}
+
+			if (dataArr.length > 1)
+				body = dataArr[1];
+
+			String[] dataArr2 = dataArr[0].split("\\s+");
+
+			for (int i = 0; i < dataArr2.length; i++) {
+				dataArr2[i] = dataArr2[i].trim();
+			}
+			
+			switch(dataArr2[0]) {
+			case CHUNK_MSG:
+				messageType = dataArr2[0];
+				version = dataArr2[1];
+				fileId = dataArr2[2];
+				chunkNo = dataArr2[3];
+				break;
+			case PUTCHUNK_MSG:
+				messageType = dataArr2[0];
+				version = dataArr2[1];
+				fileId = dataArr2[2];
+				chunkNo = dataArr2[3];
+				replicationDeg = dataArr2[4];
+				break;
+			case GETCHUNK_MSG:
+				messageType = dataArr2[0];
+				version = dataArr2[1];
+				fileId = dataArr2[2];
+				chunkNo = dataArr2[3];
+				break;
+			case REMOVED_MSG:
+				messageType = dataArr2[0];
+				version = dataArr2[1];
+				fileId = dataArr2[2];
+				break;
+			case STORED_MSG:
+				messageType = dataArr2[0];
+				version = dataArr2[1];
+				fileId = dataArr2[2];
+				chunkNo = dataArr2[3];
+				break;
+			case DELETE_MSG:
+				messageType = dataArr2[0];
+				version = dataArr2[1];
+				fileId = dataArr2[2];
+				break;
+			default:
+				messageType = "IGNORE";
+				break;
+			}
+			
+		}else{
+			messageType = "IGNORE";
+		}
+	}
+
+	@Override
+	public String toString() {
+		return "Message [messageType=" + messageType + ", version=" + version
+				+ ", fileId=" + fileId + ", chunkNo=" + chunkNo
+				+ ", replicationDeg=" + replicationDeg + ", body=" + body + "]";
+	}
+	
+	
+}

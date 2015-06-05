@@ -33,7 +33,6 @@ public class Backup implements Runnable {
 			}
 			fs.close();
 			fileId = HashCalc.generateFileID(toHash);
-			System.out.println(fileId);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -55,11 +54,11 @@ public class Backup implements Runnable {
 		int counter = 0;
 		try {
 			FileInputStream fs = new FileInputStream(file);
-			byte[] buffer = new byte[CHUNK_SIZE];
+			byte[] buffer = new byte[CHUNK_SIZE*2];
 			
 			while (fs.read(buffer) > 0) {
 				for(int i = 0; i < replicationDegree; i++){
-					sendPutchunk(i, new String(buffer), generateTarget());
+					sendPutchunk(i, new String(buffer, "UTF-8"), generateTarget());
 				}
 				counter++;
 			}

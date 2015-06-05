@@ -48,10 +48,10 @@ public class Parser {
 		msg = msg.trim();
 		if (msg != "") {
 
-			String[] dataArr = msg.split(Message.CRLF + Message.CRLF);
-//			for (int i = 0; i < dataArr.length; i++) {
-//				dataArr[i] = dataArr[i].trim();
-//			}
+			String[] dataArr = msg.split(Message.CRLF + Message.CRLF, 1);
+			for (int i = 0; i < dataArr.length; i++) {
+				System.out.println(dataArr[i]);
+			}
 
 			if (dataArr.length > 1)
 				body = dataArr[1];
