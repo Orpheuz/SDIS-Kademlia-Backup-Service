@@ -1,14 +1,15 @@
 package message;
 
 public class RestoreMessage extends Message{
-	private int chunkNo;
+	private int chunkNo, port;
 	private String fileID;
 	
-	public RestoreMessage(int chunkNo, String fileID, String body) {
+	public RestoreMessage(int chunkNo, String fileID, String body, int port) {
 		super();
 		this.chunkNo = chunkNo;
 		this.fileID = fileID;
-		message = Message.RESTORE_MSG + Message.SEPARATOR + fileID + Message.SEPARATOR + chunkNo + Message.CRLF+ Message.CRLF;
+		this.port = port;
+		message = Message.RESTORE_MSG + Message.SEPARATOR + fileID + Message.SEPARATOR + chunkNo + Message.SEPARATOR + port +Message.SEPARATOR +Message.CRLF+ Message.CRLF;
 	}
 	
 	public String getFileID() {
@@ -17,5 +18,9 @@ public class RestoreMessage extends Message{
 	
 	public int getChunkNo() {
 		return chunkNo;
+	}
+	
+	public int getPort(){
+		return port;
 	}
 }
