@@ -10,7 +10,7 @@ import java.util.TreeSet;
 import node.IdComparer;
 import node.Node;
 
-public class Routing {
+public class Routing { 
 	static Node local;
 	static TreeMap<Integer, Bucket> buckets;
 
