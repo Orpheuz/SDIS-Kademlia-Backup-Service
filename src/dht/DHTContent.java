@@ -1,10 +1,11 @@
 package dht;
 
 public class DHTContent {
-	private int ownerID, id;
+	private byte[] ownerID;
+	private int id;
 	private String fileHash;
 	
-	public DHTContent(int id, int ownerID, String fileHash) {
+	public DHTContent(int id, byte[] ownerID, String fileHash) {
 		this.setOwnerID(ownerID);
 		this.setFileHash(fileHash);
 	}
@@ -25,11 +26,11 @@ public class DHTContent {
 		this.fileHash = fileHash;
 	}
 
-	public int getOwnerID() {
+	public byte[] getOwnerID() {
 		return ownerID;
 	}
 
-	public void setOwnerID(int ownerID) {
+	public void setOwnerID(byte[] ownerID) {
 		this.ownerID = ownerID;
 	}
 }

@@ -14,11 +14,12 @@ import message.Write;
 
 public class FindNodeHandler implements Runnable {
 
+	boolean type;
 	private byte[] targetid;
 	private int n, port;
 	InetAddress ip;
 
-	public FindNodeHandler(FindNodeMessage message, InetAddress ip, int port) {
+	public FindNodeHandler(boolean type, FindNodeMessage message, InetAddress ip, int port) {
 		// TODO PARSAR A MENSAGEM E POR O TARGET NO SITIO
 	}
 

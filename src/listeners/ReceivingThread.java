@@ -50,7 +50,7 @@ public class ReceivingThread implements Runnable {
 				stream = readSocket.getInputStream();
 				byte[] message = new byte[65000];
 				int count = stream.read(message);
-
+				System.out.println("RECEBEU:"+new String(message));
 				if (count > 0) {
 					if (count != 65000) {
 						byte[] smallerData = new byte[count];
@@ -59,30 +59,32 @@ public class ReceivingThread implements Runnable {
 					}
 					Parser p = new Parser(message);
 					Message cMessage = p.parseMessage();
-					switch (Integer.parseInt(p.header[0])) {
-					case Message.PUTCHUNK_MSG:
-						TextInterface.threadManager.submit(new BackupHandler((PutChunkMessage) cMessage));
-						break;
-					case Message.RESTORE_MSG:
-						TextInterface.threadManager.submit(new RestoreHandler(true, (RestoreMessage) cMessage));
-						break;
-					case Message.RESTORE_RSP:
-						TextInterface.threadManager.submit(new RestoreHandler(false, (RestoreMessage) cMessage));
-						break;
-					case Message.DELETE_MSG:
-						TextInterface.threadManager.submit(new DeleteHandler(((DeleteMessage) cMessage).getFileID()));
-						break;
-					case Message.PING_MSG:
-						TextInterface.threadManager.submit(new PingHandler((PingMessage) cMessage));
-						break;
-					case Message.FINDNODE_MSG:
-						TextInterface.threadManager.submit(new FindNodeHandler(true, (FindNodeMessage) cMessage)));
-						break;
-					case Message.FINDNODE_RSP:
-						TextInterface.threadManager.submit(new FindNodeHandler(false, (FindNodeHandler) cMessage)));
-					default:
-						break;
-					}
+					System.out.println(readSocket.getInetAddress());
+					System.out.println(readSocket.getPort());
+//					switch (Integer.parseInt(p.header[0])) {
+//					case Message.PUTCHUNK_MSG:
+//						TextInterface.threadManager.submit(new BackupHandler((PutChunkMessage) cMessage));
+//						break;
+//					case Message.RESTORE_MSG:
+//						TextInterface.threadManager.submit(new RestoreHandler(true, (RestoreMessage) cMessage));
+//						break;
+//					case Message.RESTORE_RSP:
+//						TextInterface.threadManager.submit(new RestoreHandler(false, (RestoreMessage) cMessage));
+//						break;
+//					case Message.DELETE_MSG:
+//						TextInterface.threadManager.submit(new DeleteHandler(((DeleteMessage) cMessage).getFileID()));
+//						break;
+//					case Message.PING_MSG:
+//						TextInterface.threadManager.submit(new PingHandler((PingMessage) cMessage)));
+//						break;
+//					case Message.FINDNODE_MSG:
+//						TextInterface.threadManager.submit(new FindNodeHandler(true, (FindNodeMessage) cMessage)));
+//						break;
+//					case Message.FINDNODE_RSP:
+//						TextInterface.threadManager.submit(new FindNodeHandler(false, (FindNodeHandler) cMessage)));
+//					default:
+//						break;
+//					}
 
 				}
 			} catch (IOException e) {

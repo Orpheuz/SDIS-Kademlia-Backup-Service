@@ -6,7 +6,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-import listeners.ReplyingThread;
+import listeners.WriteThread;
 import message.Parser;
 import message.RestoreMessage;
 import message.RestoreResponse;
@@ -30,7 +30,7 @@ public class RestoreHandler implements Runnable {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-			TextInterface.threadManager.submit(new ReplyingThread((new RestoreResponse(body.toString()).getMessageBytes())));
+			TextInterface.threadManager.submit(new WriteThread((new RestoreResponse(body.toString()).getMessageBytes())));
 			
 		}
 		else {

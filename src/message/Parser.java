@@ -17,7 +17,7 @@ public class Parser {
 		if(header != null){
 			switch (Integer.parseInt(header[0])) {
 			case Message.PUTCHUNK_MSG:
-				return new PutChunkMessage(header[1], Integer.parseInt(header[2]), Integer.parseInt(header[3]));
+				return new PutChunkMessage(header[1], Integer.parseInt(header[2]), Integer.parseInt(header[3]),body);
 			case Message.RESTORE_MSG:
 				return new RestoreMessage(Integer.parseInt(header[2]), header[1], body);
 			case Message.RESTORE_RSP:
@@ -42,18 +42,18 @@ public class Parser {
 	
 	
 	public void separateHeader(byte buf[]){
+
 		String msg = "";
 		try {
 			msg = new String(buf,"UTF-8");
 		} catch (UnsupportedEncodingException e) {
-			System.out.println("Failed to convert byte array to string");
+			e.printStackTrace();
 		}
 		
 		msg = msg.trim();
 		if(msg != ""){
 			
 			String[] dataArr = msg.split(Message.CRLF + Message.CRLF);
-
 			for (int i = 0; i < dataArr.length; i++) {
 				dataArr[i] = dataArr[i].trim();
 			}
