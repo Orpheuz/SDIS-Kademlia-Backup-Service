@@ -30,6 +30,7 @@ public class Ping implements Runnable {
 	public void run() {
 		PingMessage message = new PingMessage(new String(id), port);
 		WriteThread send = new WriteThread(message.getMessage(), ip, port);
+		System.out.println(":"+message.getId().length()+":");
 		Thread thread = new Thread(send);
 		thread.start();
 

@@ -38,7 +38,6 @@ public class FindNodeHandler implements Runnable {
     if (type) {
       nodes = null;
       targetid=cMessage.getKey();
-      // TODO LER O TARGET
     } else {
       targetid = null;
       nodes=rMessage.nodes;

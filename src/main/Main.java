@@ -16,7 +16,12 @@ import listeners.WriteThread;
 public class Main {
 	public static int myPort;
 	public static void main(String[] args) throws InterruptedException, IOException, ClassNotFoundException {
-
+//		byte[] bid = new byte[160];
+//		for (int i = 0; i < bid.length; i++)
+//			bid[i] = 0;
+//		Ping p = new Ping(bid, InetAddress.getLocalHost(), 8000);
+//		Thread t = new Thread(p);
+//		t.start();
 		byte[] id = new byte[160];
 		Random r = new Random();
 		if (args[0].equals("bootstraper")) {

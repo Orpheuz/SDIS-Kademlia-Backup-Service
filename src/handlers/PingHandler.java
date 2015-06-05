@@ -12,15 +12,15 @@ public class PingHandler implements Runnable {
 	InetAddress ip;
 	byte[] id;
 
-	public PingHandler(PingMessage message, InetAddress ip, String id) {
+	public PingHandler(PingMessage message, InetAddress ip) {
 		this.message = message;
 		this.ip = ip;
-		this.id = id.getBytes();
 	}
 
 	@Override
 	public void run() {
-		Routing.insert(new Node(id, ip, message.getPort()));
+		System.out.println("asd"+message.getId().length());
+		Routing.insert(new Node(message.getId().getBytes(), ip, message.getPort()));
 	}
 
 }
