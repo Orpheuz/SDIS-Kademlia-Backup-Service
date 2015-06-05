@@ -29,9 +29,9 @@ public class HashCalc {
     
     public static String generateFileID(String filename) throws IOException {
 		File f = new File(filename);
-		Path file = f.toPath();
-		BasicFileAttributes attr = Files.readAttributes(file, BasicFileAttributes.class);
-		String temp = filename + attr.lastModifiedTime();
+//		Path file = f.toPath();
+//		BasicFileAttributes attr = Files.readAttributes(file, BasicFileAttributes.class);
+		String temp = filename;
 		String fileID = new String();
 		MessageDigest digest;
 		try {
