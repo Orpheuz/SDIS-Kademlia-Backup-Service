@@ -49,20 +49,18 @@ public class Parser {
 		if (msg != "") {
 
 			String[] dataArr = msg.split(Message.CRLF + Message.CRLF);
-			for (int i = 0; i < dataArr.length; i++) {
-				dataArr[i] = dataArr[i].trim();
-				System.out.println("trim " + i +":" + dataArr[i]);
-			}
+//			for (int i = 0; i < dataArr.length; i++) {
+//				dataArr[i] = dataArr[i].trim();
+//			}
 
 			if (dataArr.length > 1)
 				body = dataArr[1];
 
 			header = dataArr[0].split("\\s+");
 
-			for (int i = 0; i < header.length; i++) {
-				header[i] = header[i].trim();
-				System.out.println("trim " + i +":" + header[i]);
-			}
+//			for (int i = 0; i < header.length; i++) {
+//				header[i] = header[i].trim();
+//			}
 			
 		}
 
