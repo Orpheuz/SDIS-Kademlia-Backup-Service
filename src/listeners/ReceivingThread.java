@@ -63,25 +63,27 @@ public class ReceivingThread implements Runnable {
 					System.out.println(readSocket.getPort());
 					switch (Integer.parseInt(p.header[0])) {
 					case Message.PUTCHUNK_MSG:
+						System.out.println("Isto foi putchunk");
 						TextInterface.threadManager.submit(new BackupHandler((PutChunkMessage) cMessage));
 						break;
 					case Message.RESTORE_MSG:
+						System.out.println("Isto foi restore");
 						TextInterface.threadManager.submit(new RestoreHandler(true, (RestoreMessage) cMessage));
 						break;
-					case Message.RESTORE_RSP:
-						TextInterface.threadManager.submit(new RestoreHandler(false, (RestoreMessage) cMessage));
-						break;
-					case Message.DELETE_MSG:
-						TextInterface.threadManager.submit(new DeleteHandler(((DeleteMessage) cMessage).getFileID()));
-						break;
-					case Message.PING_MSG:
-						TextInterface.threadManager.submit(new PingHandler((PingMessage) cMessage)));
-						break;
-					case Message.FINDNODE_MSG:
-						TextInterface.threadManager.submit(new FindNodeHandler(true, (FindNodeMessage) cMessage)));
-						break;
-					case Message.FINDNODE_RSP:
-						TextInterface.threadManager.submit(new FindNodeHandler(false, (FindNodeHandler) cMessage)));
+//					case Message.RESTORE_RSP:
+//						TextInterface.threadManager.submit(new RestoreHandler(false, (RestoreMessage) cMessage));
+//						break;
+//					case Message.DELETE_MSG:
+//						TextInterface.threadManager.submit(new DeleteHandler(((DeleteMessage) cMessage).getFileID()));
+//						break;
+//					case Message.PING_MSG:
+//						TextInterface.threadManager.submit(new PingHandler((PingMessage) cMessage)));
+//						break;
+//					case Message.FINDNODE_MSG:
+//						TextInterface.threadManager.submit(new FindNodeHandler(true, (FindNodeMessage) cMessage)));
+//						break;
+//					case Message.FINDNODE_RSP:
+//						TextInterface.threadManager.submit(new FindNodeHandler(false, (FindNodeHandler) cMessage)));
 					default:
 						break;
 					}
