@@ -12,14 +12,14 @@ import java.net.SocketTimeoutException;
 public class Write {
 	private static int timeout;
 
-	public static String send(String msg, String ip, int port) throws IOException{
+	public static String send(String msg, InetAddress ip, int port) throws IOException{
 		return send(msg,ip,port,0);
 	}
-	public static String send(String msg, String ip, int port, int timeInterval) throws IOException {
+	public static String send(String msg, InetAddress ip, int port, int timeInterval) throws IOException {
 
 		byte[] toSend = msg.getBytes();
 		timeout = 3000;
-		InetAddress adress = InetAddress.getByName(ip);
+		InetAddress adress = ip;
 		Socket socket = new Socket();
 		String response = "";
 		try{

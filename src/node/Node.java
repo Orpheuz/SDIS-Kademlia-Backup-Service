@@ -28,7 +28,13 @@ public class Node implements Comparable<Node> {
 		this.port = port;
 		this.nodeT = new NodeTriplet(iD, port, ip);
 	}
-
+	public Node(byte[] iD,InetAddress ip, int port) throws UnknownHostException {
+		super();
+		id = iD;
+		this.ip = ip;
+		this.port = port;
+		this.nodeT = new NodeTriplet(iD, port, ip);
+	}
 	public Node() throws UnknownHostException {
 		super();
 		ip = getMyIP();
@@ -132,6 +138,11 @@ public class Node implements Comparable<Node> {
 			n+=id[i]*Math.pow(2, 159-i);
 		}
 		return ""+n;
+	}
+
+	public int getPort() {
+		
+		return port;
 	}
 
 }

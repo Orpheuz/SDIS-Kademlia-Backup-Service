@@ -11,21 +11,22 @@ import node.IdComparer;
 import node.Node;
 
 public class Routing {
-	Node local;
-	TreeMap<Integer, Bucket> buckets;
+	static Node local;
+	static TreeMap<Integer, Bucket> buckets;
 
-	public Routing(Node local) {
-		this.local = local;
+	static public void initialize(Node local) {
+		Routing.local = local;
 		buckets = new TreeMap<Integer, Bucket>();
 		buckets.put(160, new Bucket(true));
 		buckets.get(160).insert(local);
 	}
 
-	public int getbucket(Node p) {
+	
+	static public int getbucket(Node p) {
 		return local.distance(p.getId()) - 1;
 	}
 
-	public void insert(Node p) {
+	static public void insert(Node p) {
 		int n = getbucket(p);
 		ArrayList<Object> ar = null;
 		Bucket b = null;
@@ -49,9 +50,9 @@ public class Routing {
 		}
 	}
 
-	public synchronized final List<Node> findClosest(byte[] target, int numNodesRequired) {
+	static public synchronized final List<Node> findClosest(byte[] target, int numNodesRequired) {
 		TreeSet<Node> sortedSet = new TreeSet<>(new IdComparer(target));
-		sortedSet.addAll(this.getNodes());
+		sortedSet.addAll(getNodes());
 
 		List<Node> closest = new ArrayList<>(numNodesRequired);
 
@@ -65,8 +66,8 @@ public class Routing {
 		}
 		return closest;
 	}
-
-	public synchronized final List<Node> getNodes() {
+ 
+	static public synchronized final List<Node> getNodes() {
 		List<Node> nodes = new ArrayList<>();
 		Collection<Bucket> c = buckets.values();
 		for (Bucket b : c)
@@ -76,15 +77,4 @@ public class Routing {
 		return nodes;
 	}
 	
-	public String toString(){
-		String str="";
-		Collection<Bucket> c = buckets.values();
-		for (Bucket b : c)
-		{
-			for (Node n : b.getNodes())
-				str+=n.toString()+",";
-			str+=";";
-		}
-		return str;
-	}
 }
