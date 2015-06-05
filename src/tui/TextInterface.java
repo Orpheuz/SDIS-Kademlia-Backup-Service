@@ -4,7 +4,9 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
+import routing.Routing;
 import utils.Database;
 import dht.DHT;
 
@@ -22,11 +24,13 @@ public class TextInterface {
 
 
 	public static void main(String[] args) throws IOException, ClassNotFoundException {
+		threadManager = Executors.newCachedThreadPool();
 		dht = new DHT();
 		database = new Database("database.db");
 		files = new ArrayList<TextInterface.BackedFile>();
 		while (true) {
-			System.out.println("Wellcome to Kademlia Backup Service\n1.Backup file\n2.Restore file\n3.Delete file");
+			System.out.println(Routing.getNodes());
+			/*System.out.println("Wellcome to Kademlia Backup Service\n1.Backup file\n2.Restore file\n3.Delete file");
 			int c;
 			try {
 				c = Integer.parseInt(System.console().readLine());
@@ -103,7 +107,7 @@ public class TextInterface {
 			default:
 				System.out.println("pliz do good input\n");
 				break;
-			}
+			}*/
 		}
 	}
 

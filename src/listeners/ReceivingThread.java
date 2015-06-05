@@ -53,7 +53,6 @@ public class ReceivingThread implements Runnable {
 				stream = readSocket.getInputStream();
 				byte[] message = new byte[65000];
 				int count = stream.read(message);
-				System.out.println("RECEBEU:"+new String(message));
 				if (count > 0) {
 					if (count != 65000) {
 						byte[] smallerData = new byte[count];
@@ -79,7 +78,7 @@ public class ReceivingThread implements Runnable {
 						TextInterface.threadManager.submit(new DeleteHandler(((DeleteMessage) cMessage).getFileID()));
 						break;
 					case Message.PING_MSG:
-						TextInterface.threadManager.submit(new PingHandler((PingMessage) cMessage, readSocket.getInetAddress()));
+							TextInterface.threadManager.submit(new PingHandler((PingMessage) cMessage, readSocket.getInetAddress()));
 						break;
 					case Message.FINDNODE_MSG:
 						TextInterface.threadManager.submit(new FindNodeHandler((FindNodeMessage) cMessage, readSocket.getInetAddress()));

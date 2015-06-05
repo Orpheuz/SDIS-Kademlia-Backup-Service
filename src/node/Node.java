@@ -137,7 +137,7 @@ public class Node implements Comparable<Node> {
 		for (int i = 0; i < id.length; i++) {
 			n+=id[i]*Math.pow(2, 159-i);
 		}
-		return ""+n;
+		return "id is "+n+ " and ip " + ip;
 	}
 
 	public int getPort() {
