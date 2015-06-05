@@ -11,7 +11,7 @@ import node.IdComparer;
 import node.Node;
 
 public class Routing { 
-	static Node local;
+	static Node local; 
 	static TreeMap<Integer, Bucket> buckets;
 
 	static public void initialize(Node local) {
