@@ -8,6 +8,7 @@ import java.util.List;
 import node.Node;
 import node.NodeTriplet;
 import routing.Routing;
+import subprotocols.Lookup;
 import listeners.WriteThread;
 import message.FindNodeMessage;
 import message.FindNodeResponse;
@@ -18,17 +19,16 @@ public class FindNodeHandler implements Runnable {
 	private int n, port;
 	InetAddress ip;
 	boolean type;
-	List<Node> nodes;
+	ArrayList<Node> nodes;
 
 	public FindNodeHandler(boolean type, FindNodeMessage message, InetAddress ip, int port) {
-		this.type=type;
-		if(type){
-			nodes=null;
-			//TODO LER O TARGET
-		}
-		else{
-			targetid=null;
-			//TODO LER OS NOS
+		this.type = type;
+		if (type) {
+			nodes = null;
+			// TODO LER O TARGET
+		} else {
+			targetid = null;
+			// TODO LER OS NOS
 		}
 	}
 
@@ -44,10 +44,9 @@ public class FindNodeHandler implements Runnable {
 			WriteThread wt = new WriteThread(message.getMessage(), ip, port);
 			Thread t = new Thread(wt);
 			t.start();
-		}
-		else{
-			//TODO fazer a parte de ver os lookupes
+		} else {
+			if (Lookup.listening)
+				Lookup.looked = nodes;
 		}
 	}
-
 }
