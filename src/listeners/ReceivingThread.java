@@ -11,6 +11,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 import tui.TextInterface;
+import message.DeleteMessage;
 import message.Message;
 import message.Parser;
 import message.PutChunkMessage;
@@ -62,7 +63,7 @@ public class ReceivingThread implements Runnable {
 						TextInterface.threadManager.submit(new FindNodeHandler());
 						break;
 					case Message.DELETE_MSG:
-						TextInterface.threadManager.submit(new DeleteHandler(fileID));
+						TextInterface.threadManager.submit(new DeleteHandler(((DeleteMessage) cMessage).getFileID()));
 						break;
 					case Message.PING_MSG:
 						TextInterface.threadManager.submit(new PingHandler());
