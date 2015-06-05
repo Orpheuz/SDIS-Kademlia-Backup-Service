@@ -6,6 +6,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import listeners.WriteThread;
+import main.Main;
 import message.RestoreMessage;
 import node.Node;
 import tui.TextInterface;
@@ -50,7 +52,10 @@ public class Restore implements Runnable {
 	private void sendRestoreMessage(int n, byte[] target) {
 		Lookup lp = new Lookup(target);
 		Node node = lp.run();
+
+		RestoreMessage message = new RestoreMessage(n, fileId, Main.myPort);
 		
-		
+		WriteThread writeThread = new WriteThread(message.getMessage(), node.getIP(), node.getPort());
+		writeThread.run();
 	}
 }
