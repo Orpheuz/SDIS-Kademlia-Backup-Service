@@ -53,8 +53,12 @@ public class Parser {
 				System.out.println(dataArr[i]);
 			}
 
-			if (dataArr.length > 1)
-				body = dataArr[1];
+			if (dataArr.length > 1) {
+				for(int i = 0; i < dataArr.length; i++) {
+					body += dataArr[1];
+					
+				}
+			}
 
 			header = dataArr[0].split("\\s+");
 
