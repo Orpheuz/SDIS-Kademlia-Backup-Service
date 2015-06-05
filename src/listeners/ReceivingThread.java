@@ -78,7 +78,7 @@ public class ReceivingThread implements Runnable {
 						TextInterface.threadManager.submit(new DeleteHandler(((DeleteMessage) cMessage).getFileID()));
 						break;
 					case Message.PING_MSG:
-						TextInterface.threadManager.submit(new PingHandler((PingMessage) cMessage));
+						TextInterface.threadManager.submit(new PingHandler((PingMessage) cMessage, readSocket.getInetAddress()));
 						break;
 					case Message.FINDNODE_MSG:
 						TextInterface.threadManager.submit(new FindNodeHandler((FindNodeMessage) cMessage, readSocket.getInetAddress()));
