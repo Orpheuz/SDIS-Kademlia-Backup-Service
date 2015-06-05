@@ -4,49 +4,62 @@ import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.List;
 
-import listeners.WriteThread;
-import message.FindNodeMessage;
-import message.FindNodeResponse;
 import node.Node;
 import node.NodeTriplet;
 import routing.Routing;
+import subprotocols.Lookup;
+import listeners.WriteThread;
+import message.FindNodeMessage;
+import message.FindNodeResponse;
 
 public class FindNodeHandler implements Runnable {
 
 	private byte[] targetid;
-	private int n, port;
+	private int n;
 	InetAddress ip;
 	boolean type;
-	List<Node> nodes;
+	ArrayList<Node> nodes;
+	FindNodeMessage cMessage;
+	FindNodeResponse rMessage;
 
-	public FindNodeHandler(FindNodeMessage message, InetAddress ip, int port) {
-		this.type=type;
-		if(type){
-			nodes=null;
-			//TODO LER O TARGET
-		}
-		else{
-			targetid=null;
-			//TODO LER OS NOS
-		}
+	public FindNodeHandler(FindNodeMessage cMessage, InetAddress ip) {
+		type = true;
+		this.cMessage = cMessage;
+		process();
 	}
 
+	public FindNodeHandler(FindNodeResponse rMessage, InetAddress ip) {
+		type = false;
+		this.rMessage = rMessage;
+		process();
+	}
+
+	private void process() {
+		if (type) {
+			nodes = null;
+			// TODO LER O TARGET
+		} else {
+			targetid = null;
+			// TODO LER OS NOS
+		}
+	}
+	
 	@Override
 	public void run() {
 		if (type) {
 			List<Node> l = Routing.findClosest(targetid, n);
 			ArrayList<NodeTriplet> al = new ArrayList<NodeTriplet>();
 			for (Node node : l) {
-				al.add(new NodeTriplet(node.getId(), node.getPort(), node.getIP()));
+				al.add(new NodeTriplet(node.getId(), node.getPort(), node
+						.getIP()));
 			}
 			FindNodeResponse message = new FindNodeResponse(al);
-			WriteThread wt = new WriteThread(message.getMessage(), ip, port);
+			WriteThread wt = new WriteThread(message.getMessage(), ip, cMessage.getPort());
 			Thread t = new Thread(wt);
 			t.start();
-		}
-		else{
-			//TODO fazer a parte de ver os lookupes
+		} else {
+			if (Lookup.listening)
+				Lookup.looked = nodes;
 		}
 	}
-
 }

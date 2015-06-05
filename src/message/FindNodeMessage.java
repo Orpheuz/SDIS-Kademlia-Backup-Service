@@ -28,6 +28,5 @@ public class FindNodeMessage extends Message{
 		} catch (UnsupportedEncodingException e) {
 			System.out.println("Failed to convert byte array to string");
 		}
-		
 	}
 }
