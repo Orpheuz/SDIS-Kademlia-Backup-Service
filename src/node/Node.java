@@ -1,6 +1,7 @@
 package node;
 
 import java.io.IOException;
+import java.math.BigInteger;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
@@ -24,17 +25,20 @@ public class Node implements Comparable<Node> {
 	public Node(byte[] iD, int port) throws UnknownHostException {
 		super();
 		id = iD;
+
 		ip = getMyIP();
 		this.port = port;
 		this.nodeT = new NodeTriplet(iD, port, ip);
 	}
-	public Node(byte[] iD,InetAddress ip, int port) {
+
+	public Node(byte[] iD, InetAddress ip, int port) {
 		super();
 		id = iD;
 		this.ip = ip;
 		this.port = port;
 		this.nodeT = new NodeTriplet(iD, port, ip);
 	}
+
 	public Node() throws UnknownHostException {
 		super();
 		ip = getMyIP();
@@ -133,15 +137,12 @@ public class Node implements Comparable<Node> {
 	}
 
 	public String toString() {
-		int n=0;
-		for (int i = 0; i < id.length; i++) {
-			n+=id[i]*Math.pow(2, 159-i);
-		}
-		return "id is "+n+ " and ip " + ip;
+		BigInteger n = new BigInteger(id);
+		return "id is " + n + " and ip " + ip;
 	}
 
 	public int getPort() {
-		
+
 		return port;
 	}
 

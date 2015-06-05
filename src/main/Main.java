@@ -35,14 +35,16 @@ public class Main {
 			for (int i = 0; i < id.length; i++)
 				bid[i] = 0;
 			for (int i = 0; i < id.length; i++)
-				if (Math.random()<0.5)
-					id[i] = 1;
-				else
+			{
 					id[i] = 0;
+			}
+			id[2] = 1;
 			int port = Integer.parseInt(args[0]);
 			myPort = port;
 			Node n = new Node(id, port);
+			System.out.println(n);
 			Routing.initialize(n);
+			System.out.println(Routing.getNodes());
 			Node b = new Node(bid, InetAddress.getByName(args[1]), Integer.parseInt(args[2]));
 			Routing.insert(b);
 
