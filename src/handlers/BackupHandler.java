@@ -15,7 +15,7 @@ public class BackupHandler implements Runnable {
 	}
 
 	private boolean storeFile(String fileId, String chunkNo, String body) {
-		String filename = "storage/" + fileId + "_" + chunkNo + ".chunk";
+		String filename = fileId + "_" + chunkNo + ".chunk";
 		File f = new File(filename);
 		body = body.trim();
 		if (!f.exists()) {
