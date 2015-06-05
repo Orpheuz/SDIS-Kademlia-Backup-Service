@@ -51,7 +51,7 @@ public class Main {
 			t.start();
 		}
 
-		 ReceivingThread thread = new ReceivingThread(Integer.parseInt(args[1]));
+		 ReceivingThread thread = new ReceivingThread(Integer.parseInt(args[0]));
 		 Thread real = new Thread(thread);
 		 real.start();
 		//
