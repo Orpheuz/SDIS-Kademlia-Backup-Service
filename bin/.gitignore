@@ -4,3 +4,8 @@
 /dht/
 /tui/
 /message/
+/node/
+/routing/
+/subprotocols/
+/utils/
+/main/

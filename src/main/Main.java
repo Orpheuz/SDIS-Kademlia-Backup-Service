@@ -2,10 +2,7 @@ package main;
 
 import java.io.IOException;
 
-import message.Message;
-import message.Parser;
-import message.PutChunkMessage;
-import message.Write;
+import listeners.ReceivingThread;
 
 public class Main {
 
@@ -36,14 +33,10 @@ public class Main {
 			}
 		}*/
 		
-		PutChunkMessage test = new PutChunkMessage("1", 2, 3);
-		byte[] tst = test.getMessage().getBytes();
 		
-		Parser p = new Parser(tst);
-		
-		PutChunkMessage msg = (PutChunkMessage) p.parseMessage();
-		System.out.println(msg.getMessage());
-		
+		ReceivingThread thread = new ReceivingThread(8000);
+		Thread real = new Thread(thread);
+		real.start();
 		
 		
 	}
