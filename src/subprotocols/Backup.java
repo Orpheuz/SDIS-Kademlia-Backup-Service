@@ -2,18 +2,17 @@ package subprotocols;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.UnknownHostException;
-import java.security.NoSuchAlgorithmException;
 import java.util.Random;
 
-import dht.DHTContent;
+import listeners.WriteThread;
+import main.Main;
+import message.PutChunkMessage;
+import node.Node;
 import tui.TextInterface;
 import utils.HashCalc;
-import message.PutChunkMessage;
-import message.Write;
-import node.Node;
+import dht.DHTContent;
 
 public class Backup implements Runnable {
 
@@ -51,17 +50,22 @@ public class Backup implements Runnable {
 	@Override
 	public void run() {
 		System.out.println("Running backup thread");
+		int counter = 0;
 		try {
 			FileInputStream fs = new FileInputStream(file);
 			byte[] buffer = new byte[CHUNK_SIZE];
+			
 			while (fs.read(buffer) > 0) {
 				for(int i = 0; i < replicationDegree; i++){
 					sendPutchunk(i, new String(buffer), generateTarget());
 				}
+				counter++;
 			}
 			fs.close();
 			System.out.println("done");
-
+			
+			TextInterface.database.addFileToDB(new String(fileId), file.getName(), counter);
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -73,10 +77,11 @@ public class Backup implements Runnable {
 		
 		Lookup lp = new Lookup(target);
 		Node node = lp.run();
-		PutChunkMessage message = new PutChunkMessage(new String(fileId), chunkNo, replicationDegree);
-		Write.send(message.getMessage(), node.getIP(), node.getPort());
-		
-		TextInterface.dht.put(new DHTContent(0, target, fileId));
+		//TODO impedir que saiam nodes repetidos
+		PutChunkMessage message = new PutChunkMessage(new String(fileId), chunkNo, replicationDegree, body);
+		WriteThread writeThread = new WriteThread(message.getMessage(), node.getIP(), node.getPort());
+		writeThread.run();
+		TextInterface.dht.put(new DHTContent(0, node.getId(), new String(fileId) + "_" + chunkNo));
 		
 	}
 }

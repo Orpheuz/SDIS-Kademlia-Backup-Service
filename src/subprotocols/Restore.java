@@ -4,42 +4,37 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.net.InetAddress;
-import main.Main;
+import java.util.ArrayList;
+
+import message.RestoreMessage;
+import node.Node;
+import tui.TextInterface;
 
 public class Restore implements Runnable {
 	String filename, fileId;
-
+	int numberOfChunks;
 	public Restore(String filename) throws IOException {
 		this.filename = filename;
 	}
 
 	@Override
 	public void run() {
-		//TODO ir buscar a BD
-		//fileId = Main.getDatabase().getFileIdFromFilename(filename);
-		fileId = "";
+		fileId = TextInterface.database.getIdFromName(filename).getFileId();
+		numberOfChunks = TextInterface.database.getIdFromName(filename).getNumberOfChunks();
 		if (fileId != null) {
 			int currentChunk = 0;
 			String body = "";
 			byte[] buffer;
 			File outputFile = new File(filename);
+			
 			try {
 				FileOutputStream fileOuputStream = new FileOutputStream(
 						outputFile, true);
-				while(true) {
-					sendGetchunk(currentChunk);
-					
-					body = ""; //TODO receber a chunk
-					buffer = body.getBytes();
-					if (!body.equals("")) {
-						fileOuputStream.write(buffer);
+				for(int i = 0; i < numberOfChunks; i++){
+					ArrayList<byte[]> owners = TextInterface.dht.whoHasIt(fileId);
+					for(byte[] owner: owners){
+						sendRestoreMessage(i, owner);
 					}
-					System.out.println("Chunk " + currentChunk + " done " + buffer.length + "B");
-					if (buffer.length < 64000/*Main.CHUNK_SIZE*/) //TODO ir buscar o chunksize, fazer uma macro algures
-						break;
-					
-					currentChunk++;
 				}
 				System.out.println("restore done");
 				fileOuputStream.close();
@@ -52,13 +47,8 @@ public class Restore implements Runnable {
 			System.out.println("File not backed up yet");
 	}
 
-	private void sendGetchunk(int n) {
-		/*Main.getAnonMCSocket().setAddress(
-				InetAddress.getByName(Main.CONTROL_ADDRESS),
-				Main.CONTROL_PORT);
-		Main.getAnonMCSocket().send(
-				Message.buildGetChunkMessage(fileId, Integer.toString(n)));*/
-		//TODO enviar o getchunk
-		System.out.println("Sent a getchunk");
+	private void sendRestoreMessage(int n, byte[] target) {
+		Lookup lp = new Lookup(target);
+		Node node = lp.run();
 	}
 }
