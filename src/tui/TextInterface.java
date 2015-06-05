@@ -1,10 +1,13 @@
 package tui;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.concurrent.ExecutorService;
+
+import dht.DHT;
 
 public class TextInterface {
 
@@ -14,9 +17,11 @@ public class TextInterface {
 	}
 	
 	public static ExecutorService threadManager;
+	public static DHT dht;
 	static ArrayList<BackedFile> files;
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws IOException {
+		dht.initialize();
 		files = new ArrayList<TextInterface.BackedFile>();
 		while (true) {
 			System.out.println("Wellcome to Kademlia Backup Service\n1.Backup file\n2.Restore file\n3.Delete file");

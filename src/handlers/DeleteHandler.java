@@ -2,6 +2,8 @@ package handlers;
 
 import java.io.File;
 
+import tui.TextInterface;
+
 public class DeleteHandler implements Runnable {
 	
 	private String fileID;
@@ -21,8 +23,18 @@ public class DeleteHandler implements Runnable {
 		return false;
 	}
 
+	private void deleteFromDHT() {
+		TextInterface.dht.removeFile(fileID);
+	}
+	
 	@Override
 	public void run() {
-		processDelete();
+		deleteFromDHT();
+		if(processDelete())
+			System.out.println("File does not exists");
+		else 
+			System.out.println("File deleted");
+			
+		
 	}
 }
