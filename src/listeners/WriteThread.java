@@ -19,6 +19,13 @@ public class WriteThread implements Runnable {
 		this.port = port;
 		timeout = 5000;
 	}
+	
+	public WriteThread(String message ,InetAddress ip, int port, int timeout) {
+		this.message = message;
+		this.ip = ip;
+		this.port = port;
+		this.timeout = timeout;
+	}
 
 	@Override
 	public void run() {

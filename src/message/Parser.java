@@ -23,7 +23,7 @@ public class Parser {
 			case Message.DELETE_MSG:
 				return new DeleteMessage(header[1]);
 			case Message.PING_MSG:
-				return new PingMessage(Integer.parseInt(header[1]),Integer.parseInt(header[2]));
+				return new PingMessage(header[1],Integer.parseInt(header[2]));
 			case Message.PING_RSP:
 				return new PingResponse();
 			case Message.FINDNODE_MSG:

@@ -1,20 +1,21 @@
 package message;
 
 public class PingMessage extends Message {
-	int deltaTime, port;
-	
-	public int getDeltaTime() {
-		return deltaTime;
-	}
+	int port;
+	String id;
 
 	public int getPort() {
 		return port;
 	}
 
-	public PingMessage(int deltaTime, int port){
-		this.deltaTime = deltaTime;
+	public PingMessage(String id, int port){
+		this.id = id;
 		this.port = port;
-		message = Message.PING_MSG + Message.SEPARATOR + port + Message.SEPARATOR + Message.CRLF + Message.CRLF;
+		message = Message.PING_MSG + Message.SEPARATOR + id +Message.SEPARATOR + port + Message.SEPARATOR + Message.CRLF + Message.CRLF;
+	}
+
+	public String getId() {
+		return id;
 	}
 	
 }
