@@ -59,6 +59,7 @@ public class ReceivingThread implements Runnable {
 						System.arraycopy(message, 0, smallerData, 0, count);
 						message = smallerData;
 					}
+					System.out.println("message:"+message);
 					Parser p = new Parser(message);
 					Message cMessage = p.parseMessage();
 					System.out.println(readSocket.getInetAddress());
@@ -78,7 +79,8 @@ public class ReceivingThread implements Runnable {
 						TextInterface.threadManager.submit(new DeleteHandler(((DeleteMessage) cMessage).getFileID()));
 						break;
 					case Message.PING_MSG:
-							TextInterface.threadManager.submit(new PingHandler((PingMessage) cMessage, readSocket.getInetAddress()));
+						System.out.println( p.header[1]);
+							TextInterface.threadManager.submit(new PingHandler((PingMessage) cMessage, readSocket.getInetAddress(), p.header[1]));
 						break;
 					case Message.FINDNODE_MSG:
 						TextInterface.threadManager.submit(new FindNodeHandler((FindNodeMessage) cMessage, readSocket.getInetAddress()));
