@@ -27,7 +27,7 @@ public class DHT {
 		try {
 			in = new ObjectInputStream(new FileInputStream("DHT.file"));
 		} catch (FileNotFoundException e) {
-			e.printStackTrace();
+			System.out.println("No Dht file found");
 			return false;
 		} catch (IOException e) {
 			e.printStackTrace();

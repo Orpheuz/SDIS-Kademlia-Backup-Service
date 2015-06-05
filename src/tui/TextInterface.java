@@ -21,7 +21,7 @@ public class TextInterface {
 	static ArrayList<BackedFile> files;
 
 	public static void main(String[] args) throws IOException {
-		dht.initialize();
+		dht=new DHT();
 		files = new ArrayList<TextInterface.BackedFile>();
 		while (true) {
 			System.out.println("Wellcome to Kademlia Backup Service\n1.Backup file\n2.Restore file\n3.Delete file");
