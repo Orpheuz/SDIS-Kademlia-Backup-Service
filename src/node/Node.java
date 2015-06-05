@@ -28,7 +28,7 @@ public class Node implements Comparable<Node> {
 		this.port = port;
 		this.nodeT = new NodeTriplet(iD, port, ip);
 	}
-	public Node(byte[] iD,InetAddress ip, int port) throws UnknownHostException {
+	public Node(byte[] iD,InetAddress ip, int port) {
 		super();
 		id = iD;
 		this.ip = ip;
