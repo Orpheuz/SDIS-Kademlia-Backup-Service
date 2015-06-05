@@ -29,7 +29,7 @@ public class TextInterface {
 		database = new Database("database.db");
 		files = new ArrayList<TextInterface.BackedFile>();
 		while (true) {
-//			System.out.println(Routing.getNodes());
+			System.out.println(Routing.getNodes());
 			/*System.out.println("Wellcome to Kademlia Backup Service\n1.Backup file\n2.Restore file\n3.Delete file");
 			int c;
 			try {

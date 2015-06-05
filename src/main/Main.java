@@ -43,7 +43,7 @@ public class Main {
 			myPort = port;
 			Node n = new Node(id, port);
 			Routing.initialize(n);
-			Node b = new Node(bid, InetAddress.getByName(args[2]), Integer.parseInt(args[3]));
+			Node b = new Node(bid, InetAddress.getByName(args[1]), Integer.parseInt(args[2]));
 			Routing.insert(b);
 			
 			Ping p= new Ping(bid, b.getIP(), b.getPort());
