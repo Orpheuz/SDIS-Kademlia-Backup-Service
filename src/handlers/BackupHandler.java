@@ -3,11 +3,14 @@ package handlers;
 import java.io.File;
 import java.io.FileOutputStream;
 
+import message.Message;
+import message.PutChunkMessage;
+
 public class BackupHandler implements Runnable {
 	
-	private String message;
+	private PutChunkMessage message;
 	
-	public BackupHandler(String message) {
+	public BackupHandler(PutChunkMessage message) {
 		this.message = message;
 	}
 
@@ -30,6 +33,6 @@ public class BackupHandler implements Runnable {
 
 	@Override
 	public void run() {
-		//storefile
+		storeFile(message.getFileID(), Integer.toString(message.getChunkNo()), message.getBody());
 	}
 }

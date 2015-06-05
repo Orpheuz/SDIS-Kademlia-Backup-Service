@@ -1,15 +1,10 @@
 package message;
 
 import java.io.UnsupportedEncodingException;
-import java.net.InetAddress;
-import java.net.UnknownHostException;
-import java.util.ArrayList;
-
-import node.NodeTriplet;
 
 public class Parser {
-	static String body;
-	static String[] header;
+	public String body;
+	public String[] header;
 	String messageType,version,fileId;
 	int chunkNo, replicationDeg;
 
@@ -34,7 +29,7 @@ public class Parser {
 			case Message.PING_RSP:
 				return new PingResponse();
 			case Message.FINDNODE_MSG:
-				return new FindNodeMessage(header[1].getBytes());
+				return new FindNodeMessage(header[1].getBytes(),Integer.parseInt(header[2]));
 			case Message.FINDNODE_RSP:
 				return new FindNodeResponse(body);
 			default:

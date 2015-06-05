@@ -10,7 +10,7 @@ import java.util.List;
 
 public class DHT {
 
-	private List<DHTContent> DHT;
+	public static List<DHTContent> DHT;
 
 	public DHT() {
 		try {
@@ -45,14 +45,22 @@ public class DHT {
 		return DHT;
 	}
 
-	public boolean remove(String key, int ownerID) {
+	public boolean remove(String fileHash, int ownerID) {
 		for (int i = 0; i < DHT.size(); i++) {
-			if(DHT.get(i).getKey() == key && DHT.get(i).getOwnerID() == ownerID) {
+			if(DHT.get(i).getFileHash() == fileHash && DHT.get(i).getOwnerID() == ownerID) {
 				DHT.remove(i);
 				return true;
 			}
 		}
 		return false;
+	}
+	
+	public void removeFile(String fileHash) {
+		for (int i = 0; i < DHT.size(); i++) {
+			if(DHT.get(i).getFileHash() == fileHash) {
+				DHT.remove(i);
+			}
+		}
 	}
 
 	public boolean removeUserFromDHT(int ownerID) {

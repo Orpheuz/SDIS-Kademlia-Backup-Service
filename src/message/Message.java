@@ -23,5 +23,9 @@ public class Message {
 		return message;
 	}
 	
+	public byte[] getMessageBytes() {
+		return message.getBytes();
+	}
+	
 	
 }

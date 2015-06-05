@@ -33,5 +33,4 @@ public class Chunk {
 	public void setParent(Files parent) {
 		this.parent = parent;
 	}
-	
 }
