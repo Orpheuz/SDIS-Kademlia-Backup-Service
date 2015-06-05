@@ -18,7 +18,7 @@ public class Backup implements Runnable {
 
 	private File file;
 	private int replicationDegree;
-	private byte[] fileId;
+	private String fileId;
 	private final static int CHUNK_SIZE = 64000;
 	public Backup(File file, int replicationDegree) throws UnknownHostException {
 		this.file = file;
@@ -26,13 +26,14 @@ public class Backup implements Runnable {
 		try {
 			byte[] buffer = new byte[CHUNK_SIZE];
 			String toHash = file.getName();
-			System.out.println(toHash);
+			System.out.println(file.getName());
 			FileInputStream fs = new FileInputStream(file);
 			while (fs.read(buffer) > 0) {
 				toHash += new String(buffer);
 			}
 			fs.close();
-			fileId = HashCalc.sha1Hash(toHash);
+			fileId = HashCalc.generateFileID(toHash);
+			System.out.println(fileId);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -65,7 +66,7 @@ public class Backup implements Runnable {
 			fs.close();
 			System.out.println("done");
 			
-			TextInterface.database.addFileToDB(new String(fileId), file.getName(), counter);
+			TextInterface.database.addFileToDB(fileId, file.getName(), counter);
 			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -79,10 +80,10 @@ public class Backup implements Runnable {
 		Lookup lp = new Lookup(target);
 		Node node = lp.run();
 		//TODO impedir que saiam nodes repetidos
-		PutChunkMessage message = new PutChunkMessage(new String(fileId), chunkNo, replicationDegree, body);
+		PutChunkMessage message = new PutChunkMessage(fileId, chunkNo, replicationDegree, body);
 		System.out.println(fileId);
 		TextInterface.threadManager.submit(new WriteThread(message.getMessage(), node.getIP(), node.getPort()));
-		TextInterface.dht.put(new DHTContent(0, node.getId(), new String(fileId) + "_" + chunkNo));
+		TextInterface.dht.put(new DHTContent(0, node.getId(), fileId + "_" + chunkNo));
 		
 	}
 }
