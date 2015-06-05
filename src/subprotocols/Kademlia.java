@@ -2,7 +2,6 @@ package subprotocols;
 
 import java.io.IOException;
 
-import message.Write;
 import node.NodeTriplet;
 
 public class Kademlia {

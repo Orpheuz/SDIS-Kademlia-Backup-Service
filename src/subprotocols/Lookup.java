@@ -9,9 +9,10 @@ import java.util.TreeMap;
 import java.util.TreeSet;
 
 import routing.Routing;
+import listeners.WriteThread;
 import message.FindNodeMessage;
+import message.FindNodeResponse;
 import message.Message;
-import message.Write;
 import node.IdComparer;
 import node.Node;
 
@@ -49,13 +50,15 @@ public class Lookup {
 		}
 	}
 
+	
+	//TODO meter a ir buscar os nodes
 	private List<Node> look(Node node) {
 		FindNodeMessage m = new FindNodeMessage(target, K);
-		try {
-			Write.send(m.getMessage(), node.getIP(), node.getPort());
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		WriteThread wt = new WriteThread(m.getMessage(), node.getIP(), node.getPort());
+		Thread t = new Thread(wt);
+		t.start();
+		
+		//falta fazer esta parte
 		return null;
 	}
 }
