@@ -34,7 +34,7 @@ public class Parser {
 			case Message.PING_RSP:
 				return new PingResponse();
 			case Message.FINDNODE_MSG:
-				return new FindNodeMessage(header[1].getBytes());
+				return new FindNodeMessage(header[1].getBytes(),Integer.parseInt(header[2]));
 			case Message.FINDNODE_RSP:
 				return new FindNodeResponse(body);
 			default:
