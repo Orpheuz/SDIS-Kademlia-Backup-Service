@@ -26,6 +26,7 @@ public class Backup implements Runnable {
 		try {
 			byte[] buffer = new byte[CHUNK_SIZE];
 			String toHash = file.getName();
+			System.out.println(toHash);
 			FileInputStream fs = new FileInputStream(file);
 			while (fs.read(buffer) > 0) {
 				toHash += new String(buffer);

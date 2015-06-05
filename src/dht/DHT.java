@@ -23,12 +23,11 @@ public class DHT {
 	}
 
 	public boolean initialize() throws IOException {
-		ObjectInputStream in;
+		ObjectInputStream in = null;
 		try {
 			in = new ObjectInputStream(new FileInputStream("DHT.file"));
 		} catch (FileNotFoundException e) {
-			System.out.println("No Dht file found");
-			return false;
+			DHT = new ArrayList<DHTContent>();
 		} catch (IOException e) {
 			e.printStackTrace();
 			return false;
