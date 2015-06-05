@@ -14,11 +14,13 @@ import java.net.Socket;
 import tui.TextInterface;
 import message.DeleteMessage;
 import message.FindNodeMessage;
+import message.FindNodeResponse;
 import message.Message;
 import message.Parser;
 import message.PingMessage;
 import message.PutChunkMessage;
 import message.RestoreMessage;
+import message.RestoreResponse;
 
 public class ReceivingThread implements Runnable {
 
@@ -61,30 +63,32 @@ public class ReceivingThread implements Runnable {
 					Message cMessage = p.parseMessage();
 					System.out.println(readSocket.getInetAddress());
 					System.out.println(readSocket.getPort());
-//					switch (Integer.parseInt(p.header[0])) {
-//					case Message.PUTCHUNK_MSG:
-//						TextInterface.threadManager.submit(new BackupHandler((PutChunkMessage) cMessage));
-//						break;
-//					case Message.RESTORE_MSG:
-//						TextInterface.threadManager.submit(new RestoreHandler(true, (RestoreMessage) cMessage));
-//						break;
-//					case Message.RESTORE_RSP:
-//						TextInterface.threadManager.submit(new RestoreHandler(false, (RestoreMessage) cMessage));
-//						break;
-//					case Message.DELETE_MSG:
-//						TextInterface.threadManager.submit(new DeleteHandler(((DeleteMessage) cMessage).getFileID()));
-//						break;
-//					case Message.PING_MSG:
-//						TextInterface.threadManager.submit(new PingHandler((PingMessage) cMessage)));
-//						break;
-//					case Message.FINDNODE_MSG:
-//						TextInterface.threadManager.submit(new FindNodeHandler(true, (FindNodeMessage) cMessage)));
-//						break;
-//					case Message.FINDNODE_RSP:
-//						TextInterface.threadManager.submit(new FindNodeHandler(false, (FindNodeHandler) cMessage)));
-//					default:
-//						break;
-//					}
+					switch (Integer.parseInt(p.header[0])) {
+					case Message.PUTCHUNK_MSG:
+						System.out.println("Isto foi putchunk");
+						TextInterface.threadManager.submit(new BackupHandler((PutChunkMessage) cMessage));
+						break;
+					case Message.RESTORE_MSG:
+						TextInterface.threadManager.submit(new RestoreHandler((RestoreMessage) cMessage, readSocket.getInetAddress()));
+						break;
+					case Message.RESTORE_RSP:
+						TextInterface.threadManager.submit(new RestoreHandler((RestoreResponse) cMessage, readSocket.getInetAddress()));
+						break;
+					case Message.DELETE_MSG:
+						TextInterface.threadManager.submit(new DeleteHandler(((DeleteMessage) cMessage).getFileID()));
+						break;
+					case Message.PING_MSG:
+						TextInterface.threadManager.submit(new PingHandler((PingMessage) cMessage));
+						break;
+					case Message.FINDNODE_MSG:
+						TextInterface.threadManager.submit(new FindNodeHandler((FindNodeMessage) cMessage, readSocket.getInetAddress()));
+						break;
+					case Message.FINDNODE_RSP:
+						TextInterface.threadManager.submit(new FindNodeHandler((FindNodeResponse) cMessage, readSocket.getInetAddress()));
+						break;
+					default:
+						break;
+					}
 
 				}
 			} catch (IOException e) {

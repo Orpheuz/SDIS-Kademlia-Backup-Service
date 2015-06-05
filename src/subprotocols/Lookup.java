@@ -1,24 +1,21 @@
 package subprotocols;
 
-import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Comparator;
 import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
 import java.util.TreeSet;
 
 import routing.Routing;
+import listeners.WriteThread;
 import message.FindNodeMessage;
-import message.Message;
-import message.Write;
 import node.IdComparer;
 import node.Node;
 
 public class Lookup {
 
 	static final int K = 3;
-
+	static public boolean listening = false;
+	static public ArrayList<Node> looked = null;
 	byte[] target;
 	TreeSet<Node> nodes;
 
@@ -29,11 +26,11 @@ public class Lookup {
 
 	Node run() {
 		List<Node> ln = Routing.findClosest(target, K);
-		run(ln);
+		run(new ArrayList<Node>(ln));
 		return nodes.first();
 	}
 
-	private void run(List<Node> ln) {
+	private void run(ArrayList<Node> ln) {
 		for (Node node : ln) {
 			if (Arrays.equals(node.getId(), target)) {
 				nodes.clear();
@@ -42,20 +39,32 @@ public class Lookup {
 			}
 			if (nodes.lower(node) != null) {
 				nodes.add(node);
-				List<Node> answ = look(node);
+				ArrayList<Node> answ = look(node);
 				if (answ != null)
 					run(answ);
 			}
 		}
 	}
 
-	private List<Node> look(Node node) {
-		FindNodeMessage m = new FindNodeMessage(target, K);
-		try {
-			Write.send(m.getMessage(), node.getIP(), node.getPort());
-		} catch (IOException e) {
-			e.printStackTrace();
+	private ArrayList<Node> look(Node node) {
+		FindNodeMessage m = new FindNodeMessage(target, K, node.getPort());
+		WriteThread wt = new WriteThread(m.getMessage(), node.getIP(), node.getPort());
+		Thread t = new Thread(wt);
+		t.start();
+
+		int n = 0;
+		while (looked == null || n < 5) {
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+			n++;
 		}
-		return null;
+		if (looked == null)
+			return null;
+		ArrayList<Node> a = (ArrayList<Node>) looked.clone();
+		looked = null;
+		return a;
 	}
 }

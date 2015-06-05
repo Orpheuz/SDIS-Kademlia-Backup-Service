@@ -20,7 +20,7 @@ public class Restore implements Runnable {
 	@Override
 	public void run() {
 		fileId = TextInterface.database.getIdFromName(filename).getFileId();
-		numberOfChunks = TextInterface.database.getIdFromName(filename).getNumberOfChunks();
+		numberOfChunks = TextInterface.database.getIdFromName(filename).getChunks();
 		if (fileId != null) {
 			int currentChunk = 0;
 			String body = "";

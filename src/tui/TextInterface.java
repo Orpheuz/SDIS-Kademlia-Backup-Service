@@ -20,8 +20,10 @@ public class TextInterface {
 	static ArrayList<BackedFile> files;
 	public static Database database;
 
+
 	public static void main(String[] args) throws IOException, ClassNotFoundException {
 		dht.initialize();
+		dht = new DHT();
 		database = new Database("database.db");
 		files = new ArrayList<TextInterface.BackedFile>();
 		while (true) {
