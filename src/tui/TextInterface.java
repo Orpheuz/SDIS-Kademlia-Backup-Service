@@ -22,7 +22,6 @@ public class TextInterface {
 
 
 	public static void main(String[] args) throws IOException, ClassNotFoundException {
-		dht.initialize();
 		dht = new DHT();
 		database = new Database("database.db");
 		files = new ArrayList<TextInterface.BackedFile>();
