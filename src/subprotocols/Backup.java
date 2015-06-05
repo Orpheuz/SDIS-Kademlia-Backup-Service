@@ -80,8 +80,8 @@ public class Backup implements Runnable {
 		Node node = lp.run();
 		//TODO impedir que saiam nodes repetidos
 		PutChunkMessage message = new PutChunkMessage(new String(fileId), chunkNo, replicationDegree, body);
-		WriteThread writeThread = new WriteThread(message.getMessage(), node.getIP(), node.getPort());
-		writeThread.run();
+		System.out.println(fileId);
+		TextInterface.threadManager.submit(new WriteThread(message.getMessage(), node.getIP(), node.getPort()));
 		TextInterface.dht.put(new DHTContent(0, node.getId(), new String(fileId) + "_" + chunkNo));
 		
 	}
