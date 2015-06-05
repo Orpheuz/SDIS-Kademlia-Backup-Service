@@ -4,8 +4,13 @@
 /dht/
 /tui/
 /message/
+<<<<<<< HEAD
 /node/
 /routing/
 /subprotocols/
 /utils/
 /main/
+=======
+/routing/
+/subprotocols/
+>>>>>>> branch 'master' of https://github.com/Orpheuz/SDIS-Kademlia-Backup-Service.git
