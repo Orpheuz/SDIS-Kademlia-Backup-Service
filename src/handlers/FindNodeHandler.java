@@ -1,16 +1,15 @@
 package handlers;
 
-import java.io.IOException;
 import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.List;
 
-import node.Node;
-import node.NodeTriplet;
-import routing.Routing;
 import listeners.WriteThread;
 import message.FindNodeMessage;
 import message.FindNodeResponse;
+import node.Node;
+import node.NodeTriplet;
+import routing.Routing;
 
 public class FindNodeHandler implements Runnable {
 
@@ -20,7 +19,7 @@ public class FindNodeHandler implements Runnable {
 	boolean type;
 	List<Node> nodes;
 
-	public FindNodeHandler(boolean type, FindNodeMessage message, InetAddress ip, int port) {
+	public FindNodeHandler(FindNodeMessage message, InetAddress ip, int port) {
 		this.type=type;
 		if(type){
 			nodes=null;

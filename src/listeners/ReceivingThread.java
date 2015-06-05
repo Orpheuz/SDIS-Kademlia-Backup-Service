@@ -19,6 +19,7 @@ import message.Parser;
 import message.PingMessage;
 import message.PutChunkMessage;
 import message.RestoreMessage;
+import message.RestoreResponse;
 
 public class ReceivingThread implements Runnable {
 
@@ -66,10 +67,10 @@ public class ReceivingThread implements Runnable {
 						TextInterface.threadManager.submit(new BackupHandler((PutChunkMessage) cMessage));
 						break;
 					case Message.RESTORE_MSG:
-						TextInterface.threadManager.submit(new RestoreHandler(true, (RestoreMessage) cMessage));
+						TextInterface.threadManager.submit(new RestoreHandler((RestoreMessage) cMessage, readSocket.getInetAddress()));
 						break;
 					case Message.RESTORE_RSP:
-						TextInterface.threadManager.submit(new RestoreHandler(false, (RestoreMessage) cMessage));
+						TextInterface.threadManager.submit(new RestoreHandler((RestoreResponse) cMessage, readSocket.getInetAddress()));
 						break;
 					case Message.DELETE_MSG:
 						TextInterface.threadManager.submit(new DeleteHandler(((DeleteMessage) cMessage).getFileID()));
