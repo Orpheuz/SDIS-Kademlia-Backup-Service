@@ -65,6 +65,7 @@ public class ReceivingThread implements Runnable {
 					System.out.println(readSocket.getPort());
 					switch (Integer.parseInt(p.header[0])) {
 					case Message.PUTCHUNK_MSG:
+						System.out.println("Isto foi putchunk");
 						TextInterface.threadManager.submit(new BackupHandler((PutChunkMessage) cMessage));
 						break;
 					case Message.RESTORE_MSG:
@@ -84,6 +85,7 @@ public class ReceivingThread implements Runnable {
 						break;
 					case Message.FINDNODE_RSP:
 						TextInterface.threadManager.submit(new FindNodeHandler((FindNodeResponse) cMessage, readSocket.getInetAddress()));
+						break;
 					default:
 						break;
 					}

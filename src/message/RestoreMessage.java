@@ -4,7 +4,7 @@ public class RestoreMessage extends Message{
 	private int chunkNo, port;
 	private String fileID;
 	
-	public RestoreMessage(int chunkNo, String fileID, String body, int port) {
+	public RestoreMessage(int chunkNo, String fileID, int port) {
 		super();
 		this.chunkNo = chunkNo;
 		this.fileID = fileID;
