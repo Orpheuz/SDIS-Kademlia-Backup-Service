@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.concurrent.ExecutorService;
 
 public class TextInterface {
 
@@ -11,7 +12,8 @@ public class TextInterface {
 		public int repDeg;
 		public String file;
 	}
-
+	
+	public static ExecutorService threadManager;
 	static ArrayList<BackedFile> files;
 
 	public static void main(String[] args) {

@@ -1,15 +1,10 @@
 package message;
 
 import java.io.UnsupportedEncodingException;
-import java.net.InetAddress;
-import java.net.UnknownHostException;
-import java.util.ArrayList;
-
-import node.NodeTriplet;
 
 public class Parser {
-	static String body;
-	static String[] header;
+	public String body;
+	public String[] header;
 	String messageType,version,fileId;
 	int chunkNo, replicationDeg;
 

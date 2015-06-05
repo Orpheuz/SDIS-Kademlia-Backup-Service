@@ -4,6 +4,7 @@ public class PutChunkMessage extends Message {
 	private int chunkNo, repDeg;
 	private String body, fileID;
 	
+
 	public PutChunkMessage(String fileID, int chunkNo, int repDeg) {
 		super();
 		this.fileID = fileID;
@@ -22,5 +23,12 @@ public class PutChunkMessage extends Message {
 
 	public int getRepDeg() {
 		return repDeg;
+	}
+	public String getBody() {
+		return body;
+	}
+	
+	public void setBody(String body) {
+		this.body = body;
 	}
 }

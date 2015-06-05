@@ -45,9 +45,9 @@ public class DHT {
 		return DHT;
 	}
 
-	public boolean remove(String key, int ownerID) {
+	public boolean remove(String fileHash, int ownerID) {
 		for (int i = 0; i < DHT.size(); i++) {
-			if(DHT.get(i).getKey() == key && DHT.get(i).getOwnerID() == ownerID) {
+			if(DHT.get(i).getFileHash() == fileHash && DHT.get(i).getOwnerID() == ownerID) {
 				DHT.remove(i);
 				return true;
 			}

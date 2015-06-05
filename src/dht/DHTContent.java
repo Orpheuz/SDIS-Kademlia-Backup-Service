@@ -1,14 +1,20 @@
 package dht;
 
 public class DHTContent {
-	private String key;
-	private int ownerID;
+	private int ownerID, id;
 	private String fileHash;
 	
-	public DHTContent(String key, int ownerID, String fileHash) {
-		this.setKey(key);
+	public DHTContent(int id, int ownerID, String fileHash) {
 		this.setOwnerID(ownerID);
 		this.setFileHash(fileHash);
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
 	}
 
 	public String getFileHash() {
@@ -25,13 +31,5 @@ public class DHTContent {
 
 	public void setOwnerID(int ownerID) {
 		this.ownerID = ownerID;
-	}
-
-	public String getKey() {
-		return key;
-	}
-
-	public void setKey(String key) {
-		this.key = key;
 	}
 }
