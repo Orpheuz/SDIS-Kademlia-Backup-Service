@@ -13,8 +13,9 @@ public class DHT {
 
 	public static List<DHTContent> DHT;
 
-	public DHT() {
+	public DHT() throws ClassNotFoundException {
 		try {
+			DHT = new ArrayList<DHTContent>();
 			initialize();
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -22,12 +23,15 @@ public class DHT {
 		}
 	}
 
-	public boolean initialize() throws IOException {
-		ObjectInputStream in = null;
+	@SuppressWarnings("unchecked")
+	public boolean initialize() throws IOException, ClassNotFoundException {
+		ObjectInputStream in;
 		try {
 			in = new ObjectInputStream(new FileInputStream("DHT.file"));
+			DHT = (List<DHTContent>) in.readObject();
 		} catch (FileNotFoundException e) {
-			DHT = new ArrayList<DHTContent>();
+			System.out.println("No Dht file found");
+			return false;
 		} catch (IOException e) {
 			e.printStackTrace();
 			return false;
