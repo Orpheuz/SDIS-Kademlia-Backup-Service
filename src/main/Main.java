@@ -15,13 +15,14 @@ import listeners.WriteThread;
 
 public class Main {
 	public static int myPort;
+
 	public static void main(String[] args) throws InterruptedException, IOException, ClassNotFoundException {
-//		byte[] bid = new byte[160];
-//		for (int i = 0; i < bid.length; i++)
-//			bid[i] = 0;
-//		Ping p = new Ping(bid, InetAddress.getLocalHost(), 8000);
-//		Thread t = new Thread(p);
-//		t.start();
+		// byte[] bid = new byte[160];
+		// for (int i = 0; i < bid.length; i++)
+		// bid[i] = 0;
+		// Ping p = new Ping(bid, InetAddress.getLocalHost(), 8000);
+		// Thread t = new Thread(p);
+		// t.start();
 		byte[] id = new byte[160];
 		Random r = new Random(System.currentTimeMillis());
 		if (args[0].equals("bootstraper")) {
@@ -45,15 +46,18 @@ public class Main {
 			Routing.initialize(n);
 			Node b = new Node(bid, InetAddress.getByName(args[1]), Integer.parseInt(args[2]));
 			Routing.insert(b);
-			
-			Ping p= new Ping(bid, b.getIP(), b.getPort());
+
+			Ping p = new Ping(bid, b.getIP(), b.getPort());
 			Thread t = new Thread(p);
 			t.start();
 		}
-
-		 ReceivingThread thread = new ReceivingThread(Integer.parseInt(args[0]));
-		 Thread real = new Thread(thread);
-		 real.start();
+		ReceivingThread thread;
+		if (args[0].equals("bootstraper"))
+			thread = new ReceivingThread(Integer.parseInt(args[1]));
+		else
+			thread = new ReceivingThread(Integer.parseInt(args[0]));
+		Thread real = new Thread(thread);
+		real.start();
 		//
 		TextInterface.main(null);
 
