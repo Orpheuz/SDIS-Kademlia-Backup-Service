@@ -24,7 +24,6 @@ public class Main {
 		// Thread t = new Thread(p);
 		// t.start();
 		byte[] id = new byte[160];
-		Random r = new Random(System.currentTimeMillis());
 		if (args[0].equals("bootstraper")) {
 			for (int i = 0; i < id.length; i++)
 				id[i] = 0;
@@ -36,7 +35,7 @@ public class Main {
 			for (int i = 0; i < id.length; i++)
 				bid[i] = 0;
 			for (int i = 0; i < id.length; i++)
-				if (r.nextBoolean())
+				if (Math.random()<0.5)
 					id[i] = 1;
 				else
 					id[i] = 0;
