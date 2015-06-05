@@ -1,7 +1,11 @@
 package message;
 
 import java.io.UnsupportedEncodingException;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
+
+import node.NodeTriplet;
 
 public class Parser {
 	static String body;
@@ -9,23 +13,10 @@ public class Parser {
 	String messageType,version,fileId;
 	int chunkNo, replicationDeg;
 
-	private ArrayList<byte[]> messages;
-
-	public Parser(ArrayList<byte[]> messages){
-		this.messages = messages;
+	public Parser(byte[] message){
+		separateHeader(message);
 	}
 
-
-	public void run(){
-		while(true){
-			if(messages.size()>0){
-				if(messages.get(0) != null){
-					separateHeader(messages.get(0));
-					parseMessage();
-				}
-			}
-		}
-	}
 
 	public Message parseMessage() {
 		if(header != null){
@@ -34,14 +25,22 @@ public class Parser {
 				return new PutChunkMessage(header[1], Integer.parseInt(header[2]), Integer.parseInt(header[3]));
 			case Message.RESTORE_MSG:
 				return new RestoreMessage(Integer.parseInt(header[2]), header[1], body);
+			case Message.RESTORE_RSP:
+				return new RestoreResponse(body);
 			case Message.DELETE_MSG:
 				return new DeleteMessage(header[1]);
-				
+			case Message.PING_MSG:
+				return new PingMessage(Integer.parseInt(header[1]));
+			case Message.PING_RSP:
+				return new PingResponse();
+			case Message.FINDNODE_MSG:
+				return new FindNodeMessage(header[1].getBytes());
+			case Message.FINDNODE_RSP:
+				return new FindNodeResponse(body);
 			default:
 				break;
 			}
 		}
-		messages.remove(0);
 		return null;
 	}
 	

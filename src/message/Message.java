@@ -17,9 +17,9 @@ public class Message {
 	public static final String CRLF = "\r\n";
 	public static final String SEPARATOR = " ";
 	int code;
-	byte[] message;
+	String message;
 
-	public byte[] getMessage() {
+	public String getMessage() {
 		return message;
 	}
 	

@@ -1,6 +1,6 @@
 package message;
 
-public class PutChunkMessage extends Message{
+public class PutChunkMessage extends Message {
 	private int chunkNo, repDeg;
 	private String body, fileID;
 	
@@ -9,10 +9,7 @@ public class PutChunkMessage extends Message{
 		this.fileID = fileID;
 		this.chunkNo = chunkNo;
 		this.repDeg = repDeg;
-	}
-
-	public void buildPutChunkMessage() {
-		 message = (Message.PUTCHUNK_MSG + Message.SEPARATOR + fileID + Message.SEPARATOR + chunkNo + Message.SEPARATOR + repDeg + Message.SEPARATOR + Message.CRLF+ Message.CRLF + body).getBytes();
+		message = Message.PUTCHUNK_MSG + Message.SEPARATOR + fileID + Message.SEPARATOR + chunkNo + Message.SEPARATOR + repDeg + Message.SEPARATOR + Message.CRLF+ Message.CRLF + body;
 	}
 
 	public String getFileID() {
