@@ -99,7 +99,5 @@ public class Backup implements Runnable {
 		TextInterface.threadManager.submit(new WriteThread(message.getMessage(), node.getIP(), node.getPort()));
 		TextInterface.dht.put(new DHTContent(1, node.getId(), fileId + "_" + chunkNo));
 		System.out.println(TextInterface.dht.getDHT().size());
-
-
 	}
 }
