@@ -15,20 +15,28 @@ public class Parser {
 		if (header != null) {
 			switch (Integer.parseInt(header[0])) {
 			case Message.PUTCHUNK_MSG:
+				System.out.println("Received PUTCHUNK");
 				return new PutChunkMessage(header[1], Integer.parseInt(header[2]), Integer.parseInt(header[3]), body);
 			case Message.RESTORE_MSG:
+				System.out.println("Received RESTORE");
 				return new RestoreMessage(Integer.parseInt(header[2]), header[1], Integer.parseInt(header[3]));
 			case Message.RESTORE_RSP:
+				System.out.println("Received RESTORE RESPONSE");
 				return new RestoreResponse(body, header[1], Integer.parseInt(header[2]));
 			case Message.DELETE_MSG:
+				System.out.println("Received DELETE");
 				return new DeleteMessage(header[1]);
 			case Message.PING_MSG:
+				System.out.println("Received PING");
 				return new PingMessage(header[1], Integer.parseInt(header[2]));
 			case Message.PING_RSP:
+				System.out.println("Received PING RESPONSE");
 				return new PingResponse();
 			case Message.FINDNODE_MSG:
+				System.out.println("Received FINDNODE");
 				return new FindNodeMessage(header[1].getBytes(), Integer.parseInt(header[2]), Integer.parseInt(header[3]));
 			case Message.FINDNODE_RSP:
+				System.out.println("Received FINDNODE RESPONSE");
 				return new FindNodeResponse(body);
 			default:
 				break;

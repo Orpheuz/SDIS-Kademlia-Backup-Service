@@ -8,7 +8,9 @@ import java.util.concurrent.Executors;
 
 import routing.Routing;
 import subprotocols.Backup;
+import subprotocols.Delete;
 import utils.Database;
+import utils.HashCalc;
 import dht.DHT;
 
 public class TextInterface {
@@ -98,10 +100,10 @@ public class TextInterface {
 					System.out.println("pliz do good input\n");
 					continue;
 				}
+				String s = HashCalc.generateFileID(files.get(n).file);
 				files.remove(n);
 				
-				//TODO Delete
-
+				threadManager.submit(new Delete(s));
 				break;
 			}
 			default:

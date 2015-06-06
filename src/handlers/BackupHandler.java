@@ -2,8 +2,8 @@ package handlers;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 
-import message.Message;
 import message.PutChunkMessage;
 
 public class BackupHandler implements Runnable {
@@ -14,25 +14,24 @@ public class BackupHandler implements Runnable {
 		this.message = message;
 	}
 
-	private boolean storeFile(String fileId, String chunkNo, String body) {
-		String filename = fileId + "_" + chunkNo + ".chunk";
-		File f = new File(filename);
+	private boolean storeFile(String fileId, String chunkNo, String body) throws IOException {	
+		File f = new File(fileId + File.separator + chunkNo);
+		f.getParentFile().mkdirs();
+		FileOutputStream file = new FileOutputStream(f);
 		body = body.trim();
-		if (!f.exists()) {
-			try {
-				FileOutputStream out = new FileOutputStream(f);
-				out.write(body.getBytes());
-				out.close();
-				return true;
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
-		return false; 
+		file.write(body.getBytes());
+		file.close();
+
+		return true;	
+		
 	}
 
 	@Override
 	public void run() {
-		storeFile(message.getFileID(), Integer.toString(message.getChunkNo()), message.getBody());
+		try {
+			storeFile(message.getFileID(), Integer.toString(message.getChunkNo()), message.getBody());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 }

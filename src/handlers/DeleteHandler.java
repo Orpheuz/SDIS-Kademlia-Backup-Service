@@ -12,15 +12,19 @@ public class DeleteHandler implements Runnable {
 		this.fileID = fileID;
 	}
 	
-	private boolean processDelete() {
-		File[] dirFiles = new File(".").listFiles();
-		for (int i = 0; i < dirFiles.length; i++)
-			if (dirFiles[i].getName().startsWith(fileID, 0)) {
-				new File(dirFiles[i].getName()).delete();
-				System.out.println("File deleted");
-				return true;
+	private boolean processDelete(File folder) {
+		File[] files = folder.listFiles();
+		if (files != null) {
+			for (File f : files) {
+				if (f.isDirectory()) {
+					processDelete(f);
+				} else {
+					f.delete();
+				}
 			}
-		return false;
+		}
+		folder.delete();
+		return true;
 	}
 
 	private void deleteFromDHT() {
@@ -30,7 +34,7 @@ public class DeleteHandler implements Runnable {
 	@Override
 	public void run() {
 		deleteFromDHT();
-		if(processDelete())
+		if(processDelete(new File(fileID)))
 			System.out.println("File does not exists");
 		else 
 			System.out.println("File deleted");
