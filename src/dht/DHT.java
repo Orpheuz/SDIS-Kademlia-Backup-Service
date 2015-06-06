@@ -1,5 +1,6 @@
 package dht;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -51,7 +52,9 @@ public class DHT {
 	public ArrayList<byte[]> whoHasIt(String fileHash) {
 		ArrayList<byte[]> ret = new ArrayList<byte[]>();
 		for (int i = 0; i < DHT.size(); i++) {
-			if (DHT.get(i).getFileHash() == fileHash) {
+			String s = DHT.get(i).getFileHash();
+			String[] sArr = s.split(File.separator);
+			if (sArr[0] == fileHash) {
 				ret.add(DHT.get(i).getOwnerID());
 			}
 		}

@@ -82,7 +82,7 @@ public class Backup implements Runnable {
 		Lookup lp = new Lookup(target);
 		TreeSet<Node> nodes = lp.run();
 		Node node = nodes.first();
-		while(sent){
+		while(!sent){
 			if(ids.contains(nodes.first().getId())){
 				nodes.remove(node);
 				node = nodes.first();
@@ -93,7 +93,8 @@ public class Backup implements Runnable {
 			PutChunkMessage message = new PutChunkMessage(fileId, chunkNo, replicationDegree, body);
 			System.out.println(fileId);
 			TextInterface.threadManager.submit(new WriteThread(message.getMessage(), node.getIP(), node.getPort()));
-			TextInterface.dht.put(new DHTContent(0, node.getId(), fileId + "_" + chunkNo));
+			TextInterface.dht.put(new DHTContent(0, node.getId(), fileId + File.separator + chunkNo));
+			sent = true;
 		}
 	}
 }

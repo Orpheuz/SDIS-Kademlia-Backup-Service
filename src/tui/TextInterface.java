@@ -95,7 +95,7 @@ public class TextInterface {
 				System.out.println(printFiles());
 				int n;
 				try {
-					n = Integer.parseInt(System.console().readLine());
+					n = Integer.parseInt(System.console().readLine()) -1;
 				} catch (Exception e) {
 					System.out.println("pliz do good input\n");
 					continue;
