@@ -50,10 +50,33 @@ public class Backup implements Runnable {
 		try {
 			FileInputStream fs = new FileInputStream(file);
 			byte[] buffer = new byte[CHUNK_SIZE];
+			int read = 0;
+			byte[] chunk;
+			while ((read = fs.read(buffer)) > 0) {
+				chunk = new byte[read];
+				System.arraycopy(buffer, 0, chunk, 0, read);
 
-			while (fs.read(buffer) > 0) {
+				ArrayList<byte[]> ids = new ArrayList<byte[]>();
 				for(int i = 0; i < replicationDegree; i++){
-					sendPutchunk(i, new String(buffer, "UTF-8"), generateTarget());
+
+					boolean found = false;
+
+					Node node = null;
+					while(!found){
+						Lookup lp = new Lookup(generateTarget());
+						TreeSet<Node> nodes = lp.run();
+						 node = nodes.first();
+						if(ids.contains(node.getId())){
+							nodes.remove(node);
+							node = nodes.first();
+						}
+						else{
+							ids.add(node.getId());
+							found = true;
+						}
+					}
+						sendPutchunk(counter, new String(chunk, "UTF-8"), node);
+						
 				}
 				counter++;
 			}
@@ -68,29 +91,15 @@ public class Backup implements Runnable {
 
 	}
 
-	public void sendPutchunk(int chunkNo, String body, byte[] target) throws IOException{
-		System.out.println("Sent putchunk " + chunkNo);
-		boolean sent = false;
-		ArrayList<byte[]> ids = new ArrayList<byte[]>();
+	public void sendPutchunk(int chunkNo, String body, Node node) throws IOException{
 
-		Lookup lp = new Lookup(target);
-		TreeSet<Node> nodes = lp.run();
-		Node node = nodes.first();
-		while(!sent){
-			if(ids.contains(nodes.first().getId())){
-				nodes.remove(node);
-				node = nodes.first();
-			}
-			else
-				ids.add(node.getId());
 
-			PutChunkMessage message = new PutChunkMessage(fileId, chunkNo, replicationDegree, body);
-			System.out.println(fileId);
-			TextInterface.threadManager.submit(new WriteThread(message.getMessage(), node.getIP(), node.getPort()));
-			TextInterface.dht.put(new DHTContent(1, node.getId(), fileId + "_" + chunkNo));
-			System.out.println(TextInterface.dht.getDHT().size());
-			
-			sent = true;
-		}
+		PutChunkMessage message = new PutChunkMessage(fileId, chunkNo, replicationDegree, body);
+		System.out.println("Sent putchunk " + chunkNo + " with size " + message.getMessage().length());
+		TextInterface.threadManager.submit(new WriteThread(message.getMessage(), node.getIP(), node.getPort()));
+		TextInterface.dht.put(new DHTContent(1, node.getId(), fileId + "_" + chunkNo));
+		System.out.println(TextInterface.dht.getDHT().size());
+
+
 	}
 }
