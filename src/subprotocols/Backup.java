@@ -26,14 +26,7 @@ public class Backup implements Runnable {
 		this.file = file;
 		this.replicationDegree = replicationDegree;
 		try {
-			byte[] buffer = new byte[CHUNK_SIZE];
 			String toHash = file.getName();
-			System.out.println(file.getName());
-			FileInputStream fs = new FileInputStream(file);
-			while (fs.read(buffer) > 0) {
-				toHash += new String(buffer);
-			}
-			fs.close();
 			fileId = HashCalc.generateFileID(toHash);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -95,7 +88,7 @@ public class Backup implements Runnable {
 			System.out.println(fileId);
 			TextInterface.threadManager.submit(new WriteThread(message.getMessage(), node.getIP(), node.getPort()));
 			TextInterface.dht.put(new DHTContent(1, node.getId(), fileId + File.separator + chunkNo));
-			
+			System.out.println(TextInterface.dht.getDHT().size());
 			sent = true;
 		}
 	}

@@ -35,9 +35,9 @@ public class DeleteHandler implements Runnable {
 	public void run() {
 		deleteFromDHT();
 		if(processDelete(new File(fileID)))
-			System.out.println("File does not exists");
-		else 
 			System.out.println("File deleted");
+		else 
+			System.out.println("File does not exist");
 			
 		
 	}
