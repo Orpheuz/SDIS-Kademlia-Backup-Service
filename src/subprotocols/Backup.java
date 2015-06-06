@@ -13,6 +13,7 @@ import message.PutChunkMessage;
 import node.Node;
 import tui.TextInterface;
 import utils.HashCalc;
+import dht.DHT;
 import dht.DHTContent;
 
 public class Backup implements Runnable {
@@ -93,7 +94,8 @@ public class Backup implements Runnable {
 			PutChunkMessage message = new PutChunkMessage(fileId, chunkNo, replicationDegree, body);
 			System.out.println(fileId);
 			TextInterface.threadManager.submit(new WriteThread(message.getMessage(), node.getIP(), node.getPort()));
-			TextInterface.dht.put(new DHTContent(0, node.getId(), fileId + File.separator + chunkNo));
+			TextInterface.dht.put(new DHTContent(1, node.getId(), fileId + File.separator + chunkNo));
+			
 			sent = true;
 		}
 	}

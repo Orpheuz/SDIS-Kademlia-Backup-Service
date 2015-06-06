@@ -12,7 +12,7 @@ import java.util.List;
 
 public class DHT {
 
-	public static List<DHTContent> DHT;
+	public ArrayList<DHTContent> DHT;
 
 	public DHT() throws ClassNotFoundException {
 		try {
@@ -29,9 +29,10 @@ public class DHT {
 		ObjectInputStream in;
 		try {
 			in = new ObjectInputStream(new FileInputStream("DHT.file"));
-			DHT = (List<DHTContent>) in.readObject();
+			DHT = (ArrayList<DHTContent>) in.readObject();
 		} catch (FileNotFoundException e) {
 			System.out.println("No Dht file found");
+			DHT = new ArrayList<DHTContent>();
 			return false;
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -51,9 +52,12 @@ public class DHT {
 	
 	public ArrayList<byte[]> whoHasIt(String fileHash) {
 		ArrayList<byte[]> ret = new ArrayList<byte[]>();
+		System.out.println(DHT.size());
 		for (int i = 0; i < DHT.size(); i++) {
 			String s = DHT.get(i).getFileHash();
+			System.out.println(s);
 			String[] sArr = s.split(File.separator);
+			System.out.println(sArr[0]);
 			if (sArr[0] == fileHash) {
 				ret.add(DHT.get(i).getOwnerID());
 			}

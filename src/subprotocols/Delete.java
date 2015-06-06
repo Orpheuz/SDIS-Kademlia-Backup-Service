@@ -7,6 +7,7 @@ import listeners.WriteThread;
 import message.DeleteMessage;
 import node.Node;
 import tui.TextInterface;
+import dht.DHT;
 
 public class Delete implements Runnable {
 
@@ -20,6 +21,7 @@ public class Delete implements Runnable {
 	@Override
 	public void run() {
 		ArrayList<byte[]> owners = TextInterface.dht.whoHasIt(fileID);
+		System.out.println(owners.size());
 		for(int i = 0; i < owners.size(); i++) {
 			Lookup lp = new Lookup(owners.get(i));
 			TreeSet<Node> nodes = lp.run();
