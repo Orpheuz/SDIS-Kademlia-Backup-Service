@@ -1,6 +1,7 @@
 package message;
 
 import java.io.UnsupportedEncodingException;
+import java.util.Arrays;
 
 public class Parser {
 	public String body;
@@ -35,77 +36,49 @@ public class Parser {
 		}
 		return null;
 	}
+	
+	public void separateHeader(byte buf[]){
+		byte crlf[] = new byte[4];
+		crlf[0] = 0xD;
+		crlf[1] = 0xA;
+		crlf[2] = 0xD;
+		crlf[3] = 0xA;
 
-	public void separateHeader(byte buf[]) {
+		int pos = 0;
+		int j = 0;
 
-		String msg = "";
-		try {
-			msg = new String(buf, "UTF-8");
-		} catch (UnsupportedEncodingException e) {
-			e.printStackTrace();
+		for (int i = 0; i < buf.length; i++) {
+			if (crlf[j] == buf[i])
+				j++;
+
+			if (j == crlf.length) {
+				pos = i - crlf.length;
+				break;
+			}
 		}
 
-		msg = msg.trim();
-		if (msg != "") {
-
-			String[] dataArr = msg.split(Message.CRLF + Message.CRLF, 1);
-			for (int i = 0; i < dataArr.length; i++) {
-				System.out.println(dataArr[i]);
-			}
-
-			if (dataArr.length > 1) {
-				for(int i = 0; i < dataArr.length; i++) {
-					body += dataArr[1];
-					
+		if(pos != 0){
+			byte[] h;
+			h = Arrays.copyOf(buf, pos);
+			if(buf.length > pos + 4){
+				try {
+					body = new String(Arrays.copyOfRange(buf, pos+4, buf.length),"UTF-8");
+				} catch (UnsupportedEncodingException e) {
+					e.printStackTrace();
 				}
 			}
+			try {
+				String s = new String(h, "UTF-8");
+				header = new String(s).split("\\s");
+				for(int i = 0; i < header.length;i++){
+					header[i] = header[i].trim();
+				}
+			} catch (UnsupportedEncodingException e) {
+				e.printStackTrace();
+			}
 
-			header = dataArr[0].split("\\s+");
-
-//			for (int i = 0; i < header.length; i++) {
-//				header[i] = header[i].trim();
-//			}
-			
 		}
 
 	}
-
-	// public static void separateHeader(byte buf[]){
-	// byte crlf[] = new byte[4];
-	// crlf[0] = 0xD;
-	// crlf[1] = 0xA;
-	// crlf[2] = 0xD;
-	// crlf[3] = 0xA;
-	//
-	// int pos = 0;
-	// int j = 0;
-	//
-	// for (int i = 0; i < buf.length; i++) {
-	// if (crlf[j] == buf[i])
-	// j++;
-	//
-	// if (j == crlf.length) {
-	// pos = i - crlf.length;
-	// break;
-	// }
-	// }
-	//
-	// if(pos != 0){
-	// byte[] h;
-	// h = Arrays.copyOf(buf, pos);
-	// body = Arrays.copyOfRange(buf, pos+4, buf.length);
-	// try {
-	// String s = new String(h, "UTF-8");
-	// header = new String(s).split("\\s");
-	// for(int i = 0; i < header.length;i++){
-	// header[i] = header[i].trim();
-	// }
-	// } catch (UnsupportedEncodingException e) {
-	// // TODO Auto-generated catch block
-	// e.printStackTrace();
-	// }
-	// }
-	//
-	// }
 
 }

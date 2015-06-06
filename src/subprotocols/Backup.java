@@ -4,10 +4,11 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
 import java.util.Random;
+import java.util.TreeSet;
 
 import listeners.WriteThread;
-import main.Main;
 import message.PutChunkMessage;
 import node.Node;
 import tui.TextInterface;
@@ -54,8 +55,8 @@ public class Backup implements Runnable {
 		int counter = 0;
 		try {
 			FileInputStream fs = new FileInputStream(file);
-			byte[] buffer = new byte[CHUNK_SIZE*2];
-			
+			byte[] buffer = new byte[CHUNK_SIZE];
+
 			while (fs.read(buffer) > 0) {
 				for(int i = 0; i < replicationDegree; i++){
 					sendPutchunk(i, new String(buffer, "UTF-8"), generateTarget());
@@ -64,25 +65,35 @@ public class Backup implements Runnable {
 			}
 			fs.close();
 			System.out.println("done");
-			
+
 			TextInterface.database.addFileToDB(fileId, file.getName(), counter);
-			
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
 	}
-	
+
 	public void sendPutchunk(int chunkNo, String body, byte[] target) throws IOException{
 		System.out.println("Sent putchunk " + chunkNo);
-		
+		boolean sent = false;
+		ArrayList<byte[]> ids = new ArrayList<byte[]>();
+
 		Lookup lp = new Lookup(target);
-		Node node = lp.run();
-		//TODO impedir que saiam nodes repetidos
-		PutChunkMessage message = new PutChunkMessage(fileId, chunkNo, replicationDegree, body);
-		System.out.println(fileId);
-		TextInterface.threadManager.submit(new WriteThread(message.getMessage(), node.getIP(), node.getPort()));
-		TextInterface.dht.put(new DHTContent(0, node.getId(), fileId + "_" + chunkNo));
-		
+		TreeSet<Node> nodes = lp.run();
+		Node node = nodes.first();
+		while(sent){
+			if(ids.contains(nodes.first().getId())){
+				nodes.remove(node);
+				node = nodes.first();
+			}
+			else
+				ids.add(node.getId());
+
+			PutChunkMessage message = new PutChunkMessage(fileId, chunkNo, replicationDegree, body);
+			System.out.println(fileId);
+			TextInterface.threadManager.submit(new WriteThread(message.getMessage(), node.getIP(), node.getPort()));
+			TextInterface.dht.put(new DHTContent(0, node.getId(), fileId + "_" + chunkNo));
+		}
 	}
 }

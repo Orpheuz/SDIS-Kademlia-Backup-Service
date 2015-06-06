@@ -24,10 +24,10 @@ public class Lookup {
 		nodes = new TreeSet<Node>(new IdComparer(target));
 	}
 
-	Node run() {
+	TreeSet<Node> run() {
 		List<Node> ln = Routing.findClosest(target, K);
 		run(new ArrayList<Node>(ln));
-		return nodes.first();
+		return nodes;
 	}
 
 	private void run(ArrayList<Node> ln) {
