@@ -43,7 +43,10 @@ public class DHT {
 	}
 
 	public boolean put(DHTContent content) {
-		if(hasFile(content.getFileHash(), content.getOwnerID()))
+		String s = content.getFileHash();
+		String[] sArr = s.split("_");
+		
+		if(!hasFile(sArr[0], content.getOwnerID()))
 			return DHT.add(content);
 		else
 			return false;
@@ -55,10 +58,8 @@ public class DHT {
 		System.out.println(DHT.size());
 		for (int i = 0; i < DHT.size(); i++) {
 			String s = DHT.get(i).getFileHash();
-			System.out.println(s);
-			String[] sArr = s.split(File.separator);
-			System.out.println(sArr[0]);
-			if (sArr[0] == fileHash) {
+			String[] sArr = s.split("_");
+			if (sArr[0].equals(fileHash)) {
 				ret.add(DHT.get(i).getOwnerID());
 			}
 		}
@@ -67,7 +68,10 @@ public class DHT {
 
 	public boolean hasFile(String fileHash, byte[] ownerID) {
 		for (int i = 0; i < DHT.size(); i++) {
-			if (DHT.get(i).getFileHash() == fileHash
+			String s = DHT.get(i).getFileHash();
+			String[] sArr = s.split("_");
+			
+			if (sArr[0].equals(fileHash)
 					&& DHT.get(i).getOwnerID() == ownerID) {
 				return true;
 			}
