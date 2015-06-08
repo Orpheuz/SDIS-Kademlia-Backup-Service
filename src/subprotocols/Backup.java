@@ -58,13 +58,14 @@ public class Backup implements Runnable {
 
 				ArrayList<byte[]> ids = new ArrayList<byte[]>();
 				for(int i = 0; i < replicationDegree; i++){
-
+					
 					boolean found = false;
 
+					Lookup lp = new Lookup(generateTarget());
+					TreeSet<Node> nodes = lp.run();
 					Node node = null;
 					while(!found){
-						Lookup lp = new Lookup(generateTarget());
-						TreeSet<Node> nodes = lp.run();
+						System.out.println(nodes.size());
 						 node = nodes.first();
 						if(ids.contains(node.getId())){
 							nodes.remove(node);

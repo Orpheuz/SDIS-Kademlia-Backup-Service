@@ -26,24 +26,26 @@ public class Lookup {
 
 	TreeSet<Node> run() {
 		List<Node> ln = Routing.findClosest(target, K);
-		run(new ArrayList<Node>(ln));
+		for (Node node : ln) {
+			nodes.add(node);
+		}
 		return nodes;
 	}
 
 	private void run(ArrayList<Node> ln) {
-		for (Node node : ln) {
-			if (Arrays.equals(node.getId(), target)) {
-				nodes.clear();
-				nodes.add(node);
-				return;
-			}
-			if (nodes.lower(node) != null) {
-				nodes.add(node);
-				ArrayList<Node> answ = look(node);
-				if (answ != null)
-					run(answ);
-			}
-		}
+//		for (Node node : ln) {
+//			if (Arrays.equals(node.getId(), target)) {
+//				nodes.clear();
+//				nodes.add(node);
+//				return;
+//			}
+//			if (nodes.lower(node) != null) {
+//				nodes.add(node);
+//				ArrayList<Node> answ = look(node);
+//				if (answ != null)
+//					run(answ);
+//			}
+//		}
 	}
 
 	private ArrayList<Node> look(Node node) {

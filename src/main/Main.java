@@ -96,10 +96,10 @@ public class Main {
 		
 
 		Routing.insert(n1);
-		Routing.insert(n2);
-		Routing.insert(n4);
-		Routing.insert(n3);
-		Routing.insert(n5);
+//		Routing.insert(n2);
+//		Routing.insert(n4);
+//		Routing.insert(n3);
+//		Routing.insert(n5);
 		
 		ReceivingThread thread;
 		if (args[0].equals("bootstraper"))
