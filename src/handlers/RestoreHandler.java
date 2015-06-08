@@ -50,7 +50,7 @@ public class RestoreHandler implements Runnable {
 	
 	private byte[] getChunk(String fileID, int chunkNo) throws IOException {
 		
-		File file = new File("/storage" + fileID + chunkNo + ".chunk");
+		File file = new File(fileID +File.separator + chunkNo);
 		if(!file.exists()) {
 			System.out.println("File does not exist");
 			return null;
@@ -63,7 +63,7 @@ public class RestoreHandler implements Runnable {
 	}
 	
 	private boolean storeFile(String fileId, String chunkNo, String body) {
-		String filename = "storage/" + fileId + "_" + chunkNo + ".chunk";
+		String filename =fileId +File.separator + chunkNo;
 		File f = new File(filename);
 		body = body.trim();
 		if (!f.exists()) {

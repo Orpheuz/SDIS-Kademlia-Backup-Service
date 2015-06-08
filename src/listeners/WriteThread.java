@@ -41,6 +41,7 @@ public class WriteThread implements Runnable {
 		Socket socket = new Socket();
 		try{
 			socket.connect(new InetSocketAddress(ip,port), timeout);
+			System.out.println("sent something");
 			PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
 			out.print(message);
 			out.close();

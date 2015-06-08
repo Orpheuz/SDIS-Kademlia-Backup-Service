@@ -9,6 +9,7 @@ import java.util.concurrent.Executors;
 import routing.Routing;
 import subprotocols.Backup;
 import subprotocols.Delete;
+import subprotocols.Restore;
 import utils.Database;
 import utils.HashCalc;
 import dht.DHT;
@@ -78,12 +79,15 @@ public class TextInterface {
 				System.out.println(printFiles());
 				int n;
 				try {
-					n = Integer.parseInt(System.console().readLine());
+					n = Integer.parseInt(System.console().readLine()) -1 ;
 				} catch (Exception e) {
 					System.out.println("please do good input\n");
 					continue;
 				}
 				//TODO Restore
+				threadManager.submit(new Restore(files.get(n).file));
+				
+				
 				break;
 			}
 			case 3: {

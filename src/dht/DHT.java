@@ -55,7 +55,7 @@ public class DHT {
 	
 	public ArrayList<byte[]> whoHasIt(String fileHash) {
 		ArrayList<byte[]> ret = new ArrayList<byte[]>();
-		System.out.println(DHT.size());
+		System.out.println("tamanho da dht"+DHT.size());
 		for (int i = 0; i < DHT.size(); i++) {
 			String s = DHT.get(i).getFileHash();
 			String[] sArr = s.split("_");

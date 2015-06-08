@@ -68,12 +68,15 @@ public class ReceivingThread implements Runnable {
 						TextInterface.threadManager.submit(new BackupHandler((PutChunkMessage) cMessage));
 						break;
 					case Message.RESTORE_MSG:
+						System.out.println("Isto foi restore");
 						TextInterface.threadManager.submit(new RestoreHandler((RestoreMessage) cMessage, readSocket.getInetAddress()));
 						break;
 					case Message.RESTORE_RSP:
+						System.out.println("Isto foi restore response");
 						TextInterface.threadManager.submit(new RestoreHandler((RestoreResponse) cMessage, readSocket.getInetAddress()));
 						break;
 					case Message.DELETE_MSG:
+						System.out.println("Isto foi delete");
 						TextInterface.threadManager.submit(new DeleteHandler(((DeleteMessage) cMessage).getFileID()));
 						break;
 					case Message.PING_MSG:

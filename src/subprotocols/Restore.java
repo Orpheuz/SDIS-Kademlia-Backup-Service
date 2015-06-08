@@ -56,7 +56,6 @@ public class Restore implements Runnable {
 
 		RestoreMessage message = new RestoreMessage(n, fileId, Main.myPort);
 		
-		//WriteThread writeThread = new WriteThread(message.getMessage(), node.getIP(), node.getPort());
-		//writeThread.run();
+		TextInterface.threadManager.submit(new WriteThread(message.getMessage(), node.first().getIP(), node.first().getPort()));
 	}
 }
