@@ -12,6 +12,7 @@ import main.Main;
 import message.RestoreMessage;
 import node.Node;
 import tui.TextInterface;
+import utils.HashCalc;
 
 public class Restore implements Runnable {
 	String filename, fileId;
@@ -22,7 +23,12 @@ public class Restore implements Runnable {
 
 	@Override
 	public void run() {
-		fileId = TextInterface.database.getIdFromName(filename).getFileId();
+		String temp = TextInterface.database.getIdFromName(filename).getFileId();
+		try {
+			fileId = HashCalc.generateFileID(temp);
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		} 	
 		numberOfChunks = TextInterface.database.getIdFromName(filename).getChunks();
 		if (fileId != null) {
 			int currentChunk = 0;
@@ -35,6 +41,7 @@ public class Restore implements Runnable {
 						outputFile, true);
 				for(int i = 0; i < numberOfChunks; i++){
 					ArrayList<byte[]> owners = TextInterface.dht.whoHasIt(fileId);
+					System.out.println("Tamanho de owners " + owners.size());
 					for(byte[] owner: owners){
 						sendRestoreMessage(i, owner);
 					}

@@ -58,6 +58,7 @@ public class RestoreHandler implements Runnable {
 		else {
 			Path path = Paths.get(file.getAbsolutePath()); 
 			byte[] data = Files.readAllBytes(path);
+			System.out.println(new String(data));
 			return data;
 		}
 	}
