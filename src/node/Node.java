@@ -134,8 +134,7 @@ public class Node implements Comparable<Node> {
 	}
 
 	public String toString() {
-		BigInteger n = new BigInteger(id);
-		return "id is " + n + " and ip " + ip;
+		return ""+ip;
 	}
 
 	public int getPort() {

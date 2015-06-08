@@ -54,11 +54,10 @@ public class ReceivingThread implements Runnable {
 				byte[] message = new byte[65000];
 				int count = stream.read(message);
 				if (count > 0) {
-					if (count != 65000) {
-						byte[] smallerData = new byte[count];
-						System.arraycopy(message, 0, smallerData, 0, count);
-						message = smallerData;
-					}
+					System.out.println("init " + message.length + "---------" + count);
+//					byte[] smallerData = new byte[count];
+//					System.arraycopy(message, 0, smallerData, 0, count);
+//					message = smallerData;
 					Parser p = new Parser(message);
 					Message cMessage = p.parseMessage();
 					System.out.println(readSocket.getInetAddress());

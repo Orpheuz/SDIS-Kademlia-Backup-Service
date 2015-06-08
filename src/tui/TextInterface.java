@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import routing.Routing;
 import subprotocols.Backup;
 import subprotocols.Delete;
 import utils.Database;
@@ -31,12 +32,13 @@ public class TextInterface {
 		database = new Database("database.db");
 		files = new ArrayList<TextInterface.BackedFile>();
 		while (true) {
+			System.out.println("table:"+Routing.getNodes());
 			System.out.println("Wellcome to Kademlia Backup Service\n1.Backup file\n2.Restore file\n3.Delete file");
 			int c;
 			try {
 				c = Integer.parseInt(System.console().readLine());
 			} catch (Exception e) {
-				System.out.println("pliz do good input\n");
+				System.out.println("please do good input\n");
 				continue;
 			}
 			switch (c) {
@@ -52,7 +54,7 @@ public class TextInterface {
 						try {
 							rp = Integer.parseInt(System.console().readLine());
 						} catch (Exception e) {
-							System.out.println("pliz do good input\n");
+							System.out.println("please do good input\n");
 							continue;
 						}
 						break;
@@ -69,7 +71,7 @@ public class TextInterface {
 			case 2: {
 				if(files.isEmpty())
 				{
-					System.out.println("Can't restore, no file bacupados");
+					System.out.println("Can't restore, no file backed up");
 					break;
 				}
 				System.out.println("Which file?");
@@ -78,7 +80,7 @@ public class TextInterface {
 				try {
 					n = Integer.parseInt(System.console().readLine());
 				} catch (Exception e) {
-					System.out.println("pliz do good input\n");
+					System.out.println("please do good input\n");
 					continue;
 				}
 				//TODO Restore
@@ -87,7 +89,7 @@ public class TextInterface {
 			case 3: {
 				if(files.isEmpty())
 				{
-					System.out.println("Can't delete, no file bacupados");
+					System.out.println("Can't delete, no file backed up");
 					break;
 				}
 				System.out.println("Which file?");
@@ -96,7 +98,7 @@ public class TextInterface {
 				try {
 					n = Integer.parseInt(System.console().readLine()) -1;
 				} catch (Exception e) {
-					System.out.println("pliz do good input\n");
+					System.out.println("please do good input\n");
 					continue;
 				}
 				String s = HashCalc.generateFileID(files.get(n).file);
@@ -106,7 +108,7 @@ public class TextInterface {
 				break;
 			}
 			default:
-				System.out.println("pliz do good input\n");
+				System.out.println("please do good input\n");
 				break;
 			}
 		}

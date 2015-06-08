@@ -15,7 +15,7 @@ public class Parser {
 		if (header != null) {
 			switch (Integer.parseInt(header[0])) {
 			case Message.PUTCHUNK_MSG:
-				System.out.println("Received PUTCHUNK");
+				System.out.println("Received PUTCHUNK with size " + body.length());
 				return new PutChunkMessage(header[1], Integer.parseInt(header[2]), Integer.parseInt(header[3]), body);
 			case Message.RESTORE_MSG:
 				System.out.println("Received RESTORE");
@@ -71,6 +71,8 @@ public class Parser {
 			if(buf.length > pos + 4){
 				try {
 					body = new String(Arrays.copyOfRange(buf, pos+4, buf.length),"UTF-8");
+					//body = body.trim();
+					System.out.println("SHADBHBFKSADBK  "+ body.length());
 				} catch (UnsupportedEncodingException e) {
 					e.printStackTrace();
 				}

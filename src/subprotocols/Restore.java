@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.TreeSet;
 
 import listeners.WriteThread;
 import main.Main;
@@ -51,11 +52,11 @@ public class Restore implements Runnable {
 
 	private void sendRestoreMessage(int n, byte[] target) {
 		Lookup lp = new Lookup(target);
-		Node node = lp.run();
+		TreeSet<Node> node = lp.run();
 
 		RestoreMessage message = new RestoreMessage(n, fileId, Main.myPort);
 		
-		WriteThread writeThread = new WriteThread(message.getMessage(), node.getIP(), node.getPort());
-		writeThread.run();
+		//WriteThread writeThread = new WriteThread(message.getMessage(), node.getIP(), node.getPort());
+		//writeThread.run();
 	}
 }

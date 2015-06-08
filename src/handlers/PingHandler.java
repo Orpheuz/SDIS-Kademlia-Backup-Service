@@ -19,8 +19,8 @@ public class PingHandler implements Runnable {
 
 	@Override
 	public void run() {
-		System.out.println("asd"+message.getId().length());
-		System.out.println("asd"+message.getPort());
+		System.out.println(message.getId().length());
+		System.out.println(message.getPort());
 		Routing.insert(new Node(message.getId().getBytes(), ip, message.getPort()));
 	}
 
